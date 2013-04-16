@@ -28,10 +28,12 @@ namespace ThemedWindows
             ContentGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
             ContentGrid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
-            string ColorS = Enum.GetName(typeof(ExpressionWindow.ThemeColors), dialog.ThemeColor);
+            string ColorS = "_";
+            if (Application.Current.MainWindow is ExpressionWindow)
+                ColorS += Enum.GetName(typeof(ExpressionWindow.ThemeColors), ((ExpressionWindow)Application.Current.MainWindow).ThemeColor);
             Image Icon = new Image()
             {
-                Source = new BitmapImage(new Uri("pack://application:,,,/ExpressionWindow;component/icons/warning_" + ColorS + ".png")),
+                Source = new BitmapImage(new Uri("pack://application:,,,/ExpressionWindow;component/icons/warning" + ColorS + ".png")),
                 Stretch = System.Windows.Media.Stretch.None,
                 Margin = new Thickness(10)
             };

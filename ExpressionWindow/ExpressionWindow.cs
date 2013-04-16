@@ -254,9 +254,9 @@ namespace ThemedWindows
             this.Content = Window_Border;
 
             Window_Border.BorderThickness = new Thickness(1);
+            Window_Border.Background = new SolidColorBrush(Color.FromRgb(56, 56, 56));
             Window_Border.Child = Window_Grid;
 
-            Window_Grid.Background = new SolidColorBrush(Color.FromRgb(56, 56, 56));
             Window_Grid.Children.Add(Window_TitleGrid);
             Window_Content_Grid.Children.Add(ContentPlaceHolder);
             Window_Grid.Children.Add(Window_Content_Grid);

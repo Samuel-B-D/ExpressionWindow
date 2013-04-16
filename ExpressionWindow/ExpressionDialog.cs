@@ -5,11 +5,16 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace ThemedWindows
 {
-    class ExpressionDialog : ExpressionWindow
+    class ExpressionDialog : Window
     {
+        Border Window_Border = new Border();
+        Grid Window_Content_Grid = new Grid();
+        ContentControl ContentPlaceHolder = new ContentControl();
+
         public enum DialogTypes { SaveCancel, Ok, Cancel };
         private DialogTypes dialogType;
         public DialogTypes DialogType 
@@ -42,12 +47,19 @@ namespace ThemedWindows
         public ExpressionDialog(DialogTypes Type)
             : base()
         {
+            Window_Border.BorderThickness = new Thickness(1);
+            Window_Border.Background = new SolidColorBrush(Color.FromRgb(56, 56, 56));
+            Window_Border.Child = Window_Content_Grid;
+            this.Content = Window_Border;
+            Window_Content_Grid.Children.Add(ContentPlaceHolder);
+            Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
+
             Status = StatusTypes.None;
-            base.IsModal = true;
             base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             base.SizeToContent = SizeToContent.WidthAndHeight;
-            base.IsResizable = false;
             base.ShowInTaskbar = false;
+            base.ResizeMode = System.Windows.ResizeMode.CanMinimize;
+            base.WindowStyle = System.Windows.WindowStyle.None;
 
             //Create Content Grid
             Window_Content_Grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
@@ -134,6 +146,22 @@ namespace ThemedWindows
                     };
                     Footer.Children.Add(BTN_sSave);
                     break;
+            }
+        }
+
+        protected override void OnContentChanged(object oldContent, object newContent)
+        {
+            // REQUIRED TO KEEP DESIGNER SUPPORT
+            if (oldContent == Window_Border && newContent != Window_Border)
+            {
+                object Backup = newContent;
+                newContent = Window_Border;
+                ContentPlaceHolder.Content = Backup;
+                this.Content = Window_Border;
+            }
+            else
+            {
+                base.OnContentChanged(oldContent, newContent);
             }
         }
     }
