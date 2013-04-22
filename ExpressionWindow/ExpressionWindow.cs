@@ -17,7 +17,8 @@ namespace ThemedWindows
     public class ExpressionWindow : Window
     {
         static bool Loaded = false;
-        const int TITLE_BAR_HEIGHT = 26;
+        const int TITLE_BAR_HEIGHT = 22;
+        const int RESIZE_HANDLE_SIZE = 11;
 
         ResourceDictionary BaseTheme;
         ResourceDictionary CurrentTheme;
@@ -271,36 +272,36 @@ namespace ThemedWindows
 
             #region RESIZE
             Window_ResizeLeft.Opacity = 0;
-            Window_ResizeLeft.Width = 14;
+            Window_ResizeLeft.Width = RESIZE_HANDLE_SIZE;
             Window_ResizeLeft.Margin = new Thickness(-6, 10, 0, 10);
             Window_ResizeLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             Window_ResizeLeft.Cursor = Cursors.SizeWE;
             Window_ResizeLeft.DragDelta += Resize_Left;
 
             Window_ResizeRight.Opacity = 0;
-            Window_ResizeRight.Width = 14;
+            Window_ResizeRight.Width = RESIZE_HANDLE_SIZE;
             Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
             Window_ResizeRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_ResizeRight.Cursor = Cursors.SizeWE;
             Window_ResizeRight.DragDelta += Resize_Right;
 
             Window_ResizeTop.Opacity = 0;
-            Window_ResizeTop.Height = 14;
+            Window_ResizeTop.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeTop.Margin = new Thickness(10, -6, 128, 0);
             Window_ResizeTop.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Window_ResizeTop.Cursor = Cursors.SizeNS;
             Window_ResizeTop.DragDelta += Resize_Top;
 
             Window_ResizeBottom.Opacity = 0;
-            Window_ResizeBottom.Height = 14;
+            Window_ResizeBottom.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeBottom.Margin = new Thickness(10, 0, 10, -6);
             Window_ResizeBottom.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
             Window_ResizeBottom.Cursor = Cursors.SizeNS;
             Window_ResizeBottom.DragDelta += Resize_Bottom;
 
             Window_ResizeTopLeft.Opacity = 0;
-            Window_ResizeTopLeft.Width = 14;
-            Window_ResizeTopLeft.Height = 14;
+            Window_ResizeTopLeft.Width = RESIZE_HANDLE_SIZE;
+            Window_ResizeTopLeft.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeTopLeft.Margin = new Thickness(-6, -6, 0, 0);
             Window_ResizeTopLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             Window_ResizeTopLeft.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -309,8 +310,8 @@ namespace ThemedWindows
             Window_ResizeTopLeft.DragDelta += Resize_Top;
 
             Window_ResizeTopRight.Opacity = 0;
-            Window_ResizeTopRight.Width = 14;
-            Window_ResizeTopRight.Height = 14;
+            Window_ResizeTopRight.Width = RESIZE_HANDLE_SIZE;
+            Window_ResizeTopRight.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
             Window_ResizeTopRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_ResizeTopRight.VerticalAlignment = System.Windows.VerticalAlignment.Top;
@@ -319,8 +320,8 @@ namespace ThemedWindows
             Window_ResizeTopRight.DragDelta += Resize_Top;
 
             Window_ResizeBottomLeft.Opacity = 0;
-            Window_ResizeBottomLeft.Width = 14;
-            Window_ResizeBottomLeft.Height = 14;
+            Window_ResizeBottomLeft.Width = RESIZE_HANDLE_SIZE;
+            Window_ResizeBottomLeft.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeBottomLeft.Margin = new Thickness(-6, 0, 0, -6);
             Window_ResizeBottomLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             Window_ResizeBottomLeft.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
@@ -329,8 +330,8 @@ namespace ThemedWindows
             Window_ResizeBottomLeft.DragDelta += Resize_Bottom;
 
             Window_ResizeBottomRight.Opacity = 0;
-            Window_ResizeBottomRight.Width = 14;
-            Window_ResizeBottomRight.Height = 14;
+            Window_ResizeBottomRight.Width = RESIZE_HANDLE_SIZE;
+            Window_ResizeBottomRight.Height = RESIZE_HANDLE_SIZE;
             Window_ResizeBottomRight.Margin = new Thickness(0, 0, -6, -6);
             Window_ResizeBottomRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_ResizeBottomRight.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;

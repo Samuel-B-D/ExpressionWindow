@@ -1081,6 +1081,7 @@
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBrush}" />
+        <Setter Property="Padding" Value="5,0" />
         <Setter Property="Template" Value="{DynamicResource ButtonTemplate}" />
         <Setter Property="BorderThickness" Value="1" />
     </Style>
