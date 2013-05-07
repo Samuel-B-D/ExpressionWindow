@@ -6,14 +6,23 @@ using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Input;
 
 namespace ThemedWindows
 {
-    class ExpressionDialog : Window
+    public class ExpressionDialog : Window
     {
+        public static RoutedCommand CloseCommand = new RoutedCommand();
+        public static RoutedCommand PrimaryCommand = new RoutedCommand();
+
         Border Window_Border = new Border();
         Grid Window_Content_Grid = new Grid();
         ContentControl ContentPlaceHolder = new ContentControl();
+
+        String[] Names = null;
+
+        Button Button1;
+        Button Button2;
 
         public enum DialogTypes { SaveCancel, Ok, Cancel };
         private DialogTypes dialogType;
@@ -47,6 +56,21 @@ namespace ThemedWindows
         public ExpressionDialog(DialogTypes Type)
             : base()
         {
+            Initialize(Type);
+        }
+
+        public ExpressionDialog(DialogTypes Type, params String[] Names)
+            : base()
+        {
+            this.Names = Names;
+            Initialize(Type);
+        }
+
+        public void Initialize(DialogTypes Type)
+        {
+            CloseCommand.InputGestures.Add(new KeyGesture(Key.Escape, ModifierKeys.None));
+            PrimaryCommand.InputGestures.Add(new KeyGesture(Key.Enter, ModifierKeys.None));
+
             Window_Border.BorderThickness = new Thickness(1);
             Window_Border.Background = new SolidColorBrush(Color.FromRgb(56, 56, 56));
             Window_Border.Child = Window_Content_Grid;
@@ -55,6 +79,7 @@ namespace ThemedWindows
             Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
 
             Status = StatusTypes.None;
+            base.Owner = Application.Current.MainWindow;
             base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             base.SizeToContent = SizeToContent.WidthAndHeight;
             base.ShowInTaskbar = false;
@@ -79,74 +104,82 @@ namespace ThemedWindows
             switch (Type)
             {
                 case DialogTypes.Ok:
-                    Button BTN_Ok = new Button()
+                    Button1 = new Button()
                     {
-                        Content = "Ok",
+                        Content = Names == null ? "Ok" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
                         Margin = new Thickness(5)
                     };
-                    BTN_Ok.Click += (e, o) =>
-                    {
-                        this.Status = StatusTypes.Ok;
-                        this.Close();
-                    };
-                    Footer.Children.Add(BTN_Ok);
+                    Button1.Click += ButtonOk_Click;
+                    Footer.Children.Add(Button1);
+                    this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonOk_Click));
+                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonOk_Click));
                     break;
                 case DialogTypes.Cancel:
-                    Button BTN_Cancel = new Button()
+                    Button1 = new Button()
                     {
-                        Content = "Cancel",
+                        Content = Names == null ? "Cancel" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
                         Margin = new Thickness(5)
                     };
-                    BTN_Cancel.Click += (e, o) =>
-                    {
-                        this.Status = StatusTypes.Cancel;
-                        this.Close();
-                    };
-                    Footer.Children.Add(BTN_Cancel);
+                    Button1.Click += ButtonCancel_Click;
+                    Footer.Children.Add(Button1);
+                    this.CommandBindings.Add(new CommandBinding(CloseCommand));
+                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand));
                     break;
                 case DialogTypes.SaveCancel:
                     Footer.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
                     Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
                     Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
-                    Button BTN_sCancel = new Button()
+                    Button2 = new Button()
                     {
-                        Content = "Cancel",
+                        Content = Names == null ? "Cancel" : Names[1],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
                         Margin = new Thickness(5)
                     };
-                    BTN_sCancel.Click += (e, o) =>
-                    {
-                        this.Status = StatusTypes.Cancel;
-                        this.Close();
-                    };
-                    Grid.SetColumn(BTN_sCancel, 1);
-                    Footer.Children.Add(BTN_sCancel);
+                    Button2.Click += ButtonCancel_Click;
+                    Grid.SetColumn(Button2, 1);
+                    Footer.Children.Add(Button2);
 
-                    Button BTN_sSave = new Button()
+                    Button1 = new Button()
                     {
-                        Content = "Save",
+                        Content = Names == null ? "Save" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
                         Margin = new Thickness(5)
                     };
-                    BTN_sSave.Click += (e, o) =>
-                    {
-                        this.Status = StatusTypes.Save;
-                        this.Close();
-                    };
-                    Footer.Children.Add(BTN_sSave);
+                    Button1.Click += ButtonSave_Click;
+                    Footer.Children.Add(Button1);
+                    this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonCancel_Click));
+                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonSave_Click));
                     break;
             }
+        }
+
+        protected virtual void ButtonOk_Click(object sender, RoutedEventArgs e)
+        {
+            this.Status = StatusTypes.Ok;
+            this.Close();
+        }
+
+        protected virtual void ButtonCancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.Status = StatusTypes.Cancel;
+            this.Close();
+        }
+
+        protected virtual void ButtonSave_Click(object sender, RoutedEventArgs e)
+        {
+            this.Status = StatusTypes.Save;
+            this.Close();
         }
 
         protected override void OnContentChanged(object oldContent, object newContent)

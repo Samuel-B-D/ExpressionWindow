@@ -8,6 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls.Primitives;
 using System.Windows.Threading;
+using System.ComponentModel;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 
 namespace ThemedWindows
 {
@@ -16,8 +19,8 @@ namespace ThemedWindows
     /// </summary>
     public class ExpressionWindow : Window
     {
-        static bool Loaded = false;
-        const int TITLE_BAR_HEIGHT = 22;
+        static bool FrameLoaded = false;
+        const int TITLE_BAR_HEIGHT = 24;
         const int RESIZE_HANDLE_SIZE = 11;
 
         ResourceDictionary BaseTheme;
@@ -25,11 +28,11 @@ namespace ThemedWindows
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey, White }
         private static int X_BUTTON_NORMAL_WIDTH = 54;
         private static int X_BUTTON_MAXIMIZED_WIDTH = 58;
-        bool ResizeInProcess = false;
         bool Maximized = false;
         private Rect _restoreLocation;
-        bool FrameLoaded = false;
         bool BaseResourceLoaded = false;
+
+        Image TitleIcon = new Image();
 
         DispatcherTimer EpilepticTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
 
@@ -56,6 +59,17 @@ namespace ThemedWindows
                     Application.Current.Resources.MergedDictionaries.Add(BaseTheme);
                     BaseResourceLoaded = true;
                 }
+            }
+        }
+
+        public bool IsMaximized
+        {
+            get { return Maximized; }
+            set
+            {
+                if (value != Maximized)
+                    Window_MaximizeRestore(this, null);
+                Maximized = value;
             }
         }
 
@@ -202,6 +216,19 @@ namespace ThemedWindows
         public ExpressionWindow()
             : base()
         {
+            TitleIcon.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
+            TitleIcon.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            TitleIcon.Width = 16;
+            TitleIcon.Height = 16;
+            TitleIcon.Margin = new Thickness(8, 0, 0, 0);
+
+            //Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+            //    ico.Handle,
+            //    new Int32Rect(0,0,ico.Width, ico.Height),
+            //    BitmapSizeOptions.FromEmptyOptions()
+            //);
+            TitleIcon.SetBinding(Image.SourceProperty, new Binding() { Path = new PropertyPath("Icon"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
+
             this.MinWidth = 50;
             this.MinHeight = TITLE_BAR_HEIGHT;
             IsColorPickerEnabled = true;
@@ -210,24 +237,25 @@ namespace ThemedWindows
             Window_TitleLabel.SetBinding(Label.ContentProperty, new Binding() { Path = new PropertyPath("Title"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
             this.Activated += new EventHandler(ExpressionWindow_Activated);
             this.Deactivated += new EventHandler(ExpressionWindow_Deactivated);
-            if (Loaded)
+            if (FrameLoaded)
                 themeColor = ((ExpressionWindow)Application.Current.MainWindow).ThemeColor;
             else
             {
                 ThemeColor = ThemeColors.Green;
-                Loaded = true;
+                FrameLoaded = true;
             }
+
             Initialize();
         }
 
-        void ExpressionWindow_Deactivated(object sender, EventArgs e)
+        protected virtual void ExpressionWindow_Deactivated(object sender, EventArgs e)
         {
-            this.OpacityMask = new SolidColorBrush(Color.FromArgb(180, 0, 0, 0));
+            this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
         }
 
-        void ExpressionWindow_Activated(object sender, EventArgs e)
+        protected virtual void ExpressionWindow_Activated(object sender, EventArgs e)
         {
-            this.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 255, 255, 255));
+            this.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
         }
 
         protected override void OnContentChanged(object oldContent, object newContent)
@@ -346,17 +374,17 @@ namespace ThemedWindows
             Window_TitleGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Window_TitleGrid.MouseDown += Window_Drag;
             Window_TitleGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
+            Window_TitleGrid.Children.Add(TitleIcon);
             Window_TitleGrid.Children.Add(Window_TitleLabel);
             Window_TitleGrid.Children.Add(Window_Button_Close);
             Window_TitleGrid.Children.Add(Window_Button_Maximize);
             Window_TitleGrid.Children.Add(Window_Button_Minimize);
-            
 
             Window_TitleLabel.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Window_TitleLabel.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
             Window_TitleLabel.Height = TITLE_BAR_HEIGHT - 2;
             Window_TitleLabel.VerticalContentAlignment = System.Windows.VerticalAlignment.Center;
-            Window_TitleLabel.Margin = new Thickness(6, 0, 140, 0);
+            Window_TitleLabel.Margin = new Thickness(30, 0, 140, 0);
             Window_TitleLabel.Foreground = Brushes.White;
 
             Window_Button_Close.MouseEnter += Window_Button_MouseEnter;
@@ -507,12 +535,13 @@ namespace ThemedWindows
             this.Focus();
             if (Maximized)
             {
-                ((Button)sender).Content = 1;
+
+                Window_Button_Maximize.Content = 1;
                 Restore();
             }
             else
             {
-                ((Button)sender).Content = 2;
+                Window_Button_Maximize.Content = 2;
                 MaximizeWindow();
             }
             Maximized = !Maximized;
