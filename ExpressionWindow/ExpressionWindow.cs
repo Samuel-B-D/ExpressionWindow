@@ -26,13 +26,11 @@ namespace ThemedWindows
         ResourceDictionary BaseTheme;
         ResourceDictionary CurrentTheme;
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey, White }
-        private static int X_BUTTON_NORMAL_WIDTH = 54;
-        private static int X_BUTTON_MAXIMIZED_WIDTH = 58;
+        private static int X_BUTTON_NORMAL_WIDTH = 48;
+        private static int X_BUTTON_MAXIMIZED_WIDTH = 60;
         bool Maximized = false;
         private Rect _restoreLocation;
         bool BaseResourceLoaded = false;
-
-        Image TitleIcon = new Image();
 
         DispatcherTimer EpilepticTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
 
@@ -209,6 +207,8 @@ namespace ThemedWindows
         protected Grid Window_Content_Grid = new Grid();
         ContentControl ContentPlaceHolder = new ContentControl();
 
+        Image TitleIcon = new Image();
+
         ContextMenu ColorPicker = new ContextMenu();
 
         #endregion
@@ -221,6 +221,9 @@ namespace ThemedWindows
             TitleIcon.Width = 16;
             TitleIcon.Height = 16;
             TitleIcon.Margin = new Thickness(8, 0, 0, 0);
+
+            Icon = BlackFox.Win32.Icons.IconFromExtensionShell(".exe", BlackFox.Win32.Icons.SystemIconSize.Small);
+            TitleIcon.Source = BlackFox.Win32.Icons.IconFromExtensionShell(".exe", BlackFox.Win32.Icons.SystemIconSize.Small);
 
             //Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
             //    ico.Handle,
@@ -400,7 +403,7 @@ namespace ThemedWindows
             Window_Button_Close.Foreground = Brushes.Black;
             Window_Button_Close.BorderThickness = new Thickness(1);
             Window_Button_Close.FontWeight = FontWeights.Bold;
-            Window_Button_Close.Width = 48;
+            Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
             Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
             Window_Button_Close.Focusable = false;
 
@@ -491,20 +494,23 @@ namespace ThemedWindows
             Left = currentScreen.WorkingArea.X;
             Top = currentScreen.WorkingArea.Y;
 
-            //Prohib resize
-            Window_ResizeLeft.Cursor = Cursors.Arrow;
-            Window_ResizeRight.Cursor = Cursors.Arrow;
-            Window_ResizeTop.Cursor = Cursors.Arrow;
-            Window_ResizeBottom.Cursor = Cursors.Arrow;
-            Window_ResizeTopLeft.Cursor = Cursors.Arrow;
-            Window_ResizeTopRight.Cursor = Cursors.Arrow;
-            Window_ResizeBottomLeft.Cursor = Cursors.Arrow;
-            Window_ResizeBottomRight.Cursor = Cursors.Arrow;
+            //Remove resize cursors
+            Window_ResizeLeft.IsEnabled = false;
+            Window_ResizeRight.IsEnabled = false;
+            Window_ResizeTop.IsEnabled = false;
+            Window_ResizeBottom.IsEnabled = false;
+            Window_ResizeTopLeft.IsEnabled = false;
+            Window_ResizeTopRight.IsEnabled = false;
+            Window_ResizeBottomLeft.IsEnabled = false;
+            Window_ResizeBottomRight.IsEnabled = false;
+
+            Window_ResizeTopRight.Margin = new Thickness(-6, 30, -6, 0);
+            Window_ResizeRight.Margin = new Thickness(0, 30, -6, 10);
 
             //Remove border
             Window_Border.BorderThickness = new Thickness(0);
             Window_Button_Close.Width = X_BUTTON_MAXIMIZED_WIDTH;
-            Window_Button_Close.Margin = new Thickness(Window_Button_Close.Margin.Left, Window_Button_Close.Margin.Top, Window_Button_Close.Margin.Right - 4, Window_Button_Close.Margin.Bottom);
+            Window_Button_Close.Margin = new Thickness(0, -3, -1, 0);
         }
 
         private void Restore()
@@ -515,19 +521,24 @@ namespace ThemedWindows
             Top = _restoreLocation.Y;
 
             //Restore resize cursors
-            Window_ResizeLeft.Cursor = Cursors.SizeWE;
-            Window_ResizeRight.Cursor = Cursors.SizeWE;
-            Window_ResizeTop.Cursor = Cursors.SizeNS;
-            Window_ResizeBottom.Cursor = Cursors.SizeNS;
-            Window_ResizeTopLeft.Cursor = Cursors.SizeNWSE;
-            Window_ResizeTopRight.Cursor = Cursors.SizeNESW;
-            Window_ResizeBottomLeft.Cursor = Cursors.SizeNESW;
-            Window_ResizeBottomRight.Cursor = Cursors.SizeNWSE;
+            Window_ResizeLeft.IsEnabled = true;
+            Window_ResizeRight.IsEnabled = true;
+            Window_ResizeTop.IsEnabled = true;
+            Window_ResizeBottom.IsEnabled = true;
+            Window_ResizeTopLeft.IsEnabled = true;
+            Window_ResizeTopRight.IsEnabled = true;
+            Window_ResizeBottomLeft.IsEnabled = true;
+            Window_ResizeBottomRight.IsEnabled = true;
+
+            Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
+            Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
+
+            Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
 
             //Restore border
             Window_Border.BorderThickness = new Thickness(1);
             Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
-            Window_Button_Close.Margin = new Thickness(Window_Button_Close.Margin.Left, Window_Button_Close.Margin.Top, Window_Button_Close.Margin.Right + 4, Window_Button_Close.Margin.Bottom);
+            Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
         }
 
         private void Window_MaximizeRestore(object sender, RoutedEventArgs e)

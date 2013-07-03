@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="ExpressionDialog.cs" />
     <Compile Include="ExpressionMessageBox.cs" />
+    <Compile Include="IconHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressionWindow.cs" />
     <Page Include="Themes\BlueColors.xaml">
