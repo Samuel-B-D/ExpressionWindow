@@ -12,13 +12,19 @@
                 <MenuItem Header="MenuItem 4" />
             </MenuItem>
         </Menu>
-        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="12,232,342,54" />
+        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="96,326,432,143" />
         <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="12,39,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
         <ListBox Height="100" HorizontalAlignment="Left" Margin="12,68,0,0" Name="listBox1" VerticalAlignment="Top" Width="120">
             <ListBoxItem Content="stuff" />
             <ListBoxItem Content="stuff"/>
             <ListBoxItem Content="stuff" />
             <ListBoxItem Content="stuff" />
+            <ListBoxItem Content="stuff"/>
+            <ListBoxItem Content="stuff"/>
+            <ListBoxItem Content="stuff"/>
+            <ListBoxItem Content="stuff"/>
+            <ListBoxItem/>
+            <ListBoxItem/>
         </ListBox>
         <CheckBox Content="CheckBox" Height="16" HorizontalAlignment="Left" Margin="12,262,0,0" Name="checkBox1" VerticalAlignment="Top" />
         <ComboBox Height="23" HorizontalAlignment="Left" Margin="12,174,0,0" Name="comboBox1" VerticalAlignment="Top" Width="120">
@@ -43,8 +49,10 @@
             </TreeViewItem>
             <TreeViewItem Header="fgjfgjfj" />
         </TreeView>
-        <ScrollBar Height="31" HorizontalAlignment="Left" Margin="12,430,0,0" Name="scrollBar1" VerticalAlignment="Top" Width="329" Orientation="Horizontal" />
+        <ScrollBar Margin="12,433,332,43" Orientation="Horizontal" RenderTransformOrigin="0.438,2.412" />
+        <ScrollBar Margin="657,56,4,43" />
         <Calendar Height="170" HorizontalAlignment="Left" Margin="432,145,0,0" Name="calendar1" VerticalAlignment="Top" Width="180" />
         <ProgressBar Height="24" HorizontalAlignment="Left" Margin="172,195,0,0" Name="progressBar1" VerticalAlignment="Top" Width="174" Value="50" />
+        <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="55,310,0,0" VerticalAlignment="Top" Width="256"/>
     </Grid>
 </my:ExpressionWindow>
