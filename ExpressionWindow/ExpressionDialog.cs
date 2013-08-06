@@ -106,7 +106,7 @@ namespace ThemedWindows
                 case DialogTypes.Ok:
                     Button1 = new Button()
                     {
-                        Content = Names == null ? "Ok" : Names[0],
+                        Content = Names == null || Names.Length <= 0 ? "Ok" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
@@ -120,7 +120,7 @@ namespace ThemedWindows
                 case DialogTypes.Cancel:
                     Button1 = new Button()
                     {
-                        Content = Names == null ? "Cancel" : Names[0],
+                        Content = Names == null || Names.Length <= 0 ? "Cancel" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
@@ -138,7 +138,7 @@ namespace ThemedWindows
 
                     Button2 = new Button()
                     {
-                        Content = Names == null ? "Cancel" : Names[1],
+                        Content = Names == null || Names.Length <= 1 ? "Cancel" : Names[1],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),
@@ -150,7 +150,7 @@ namespace ThemedWindows
 
                     Button1 = new Button()
                     {
-                        Content = Names == null ? "Save" : Names[0],
+                        Content = Names == null || Names.Length <= 0 ? "Save" : Names[0],
                         HorizontalAlignment = HorizontalAlignment.Right,
                         VerticalAlignment = VerticalAlignment.Center,
                         Padding = new Thickness(10, 5, 10, 5),

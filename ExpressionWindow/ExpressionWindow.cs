@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using System.ComponentModel;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
+using Microsoft.Windows.Shell;
 
 namespace ThemedWindows
 {
@@ -21,18 +22,20 @@ namespace ThemedWindows
     {
         static bool FrameLoaded = false;
         const int TITLE_BAR_HEIGHT = 24;
-        const int RESIZE_HANDLE_SIZE = 11;
+        const int RESIZE_HANDLE_SIZE = 6;
 
         ResourceDictionary BaseTheme;
         ResourceDictionary CurrentTheme;
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey, White }
-        private static int X_BUTTON_NORMAL_WIDTH = 48;
-        private static int X_BUTTON_MAXIMIZED_WIDTH = 60;
+        private const int X_BUTTON_NORMAL_WIDTH = 48;
+        private const int X_BUTTON_MAXIMIZED_WIDTH = 53;
+        private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, -3, 5, 0);
+        private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, -3, 0, 0);
         bool Maximized = false;
         private Rect _restoreLocation;
         bool BaseResourceLoaded = false;
 
-        DispatcherTimer EpilepticTimer = new DispatcherTimer() { Interval = new TimeSpan(0, 0, 0, 0, 100) };
+        WindowChrome Chrome;
 
         ThemeColors themeColor;
         public ThemeColors ThemeColor
@@ -60,17 +63,6 @@ namespace ThemedWindows
             }
         }
 
-        public bool IsMaximized
-        {
-            get { return Maximized; }
-            set
-            {
-                if (value != Maximized)
-                    Window_MaximizeRestore(this, null);
-                Maximized = value;
-            }
-        }
-
         private bool isColorPickerEnabled;
         public bool IsColorPickerEnabled 
         {
@@ -85,24 +77,6 @@ namespace ThemedWindows
                 else
                 {
                     Window_TitleGrid.ContextMenu = null;
-                }
-            }
-        }
-
-        private bool isEpileptic;
-        public bool IsEpileptic
-        {
-            get { return isEpileptic; }
-            set
-            {
-                isEpileptic = value;
-                if (value)
-                {
-                    EpilepticTimer.Start();
-                }
-                else
-                {
-                    EpilepticTimer.Stop();
                 }
             }
         }
@@ -123,38 +97,6 @@ namespace ThemedWindows
                 {
                     Window_TitleGrid.Visibility = System.Windows.Visibility.Hidden;
                     ContentPlaceHolder.Margin = new Thickness(0);
-                }
-            }
-        }
-
-        private bool isResizable;
-        public bool IsResizable
-        {
-            get { return isResizable; }
-            set
-            {
-                isResizable = value;
-                if (value)
-                {
-                    Window_ResizeLeft.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeRight.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeTop.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeBottom.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeTopLeft.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeTopRight.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeBottomLeft.Visibility = System.Windows.Visibility.Visible;
-                    Window_ResizeBottomRight.Visibility = System.Windows.Visibility.Visible;
-                }
-                else
-                {
-                    Window_ResizeLeft.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeRight.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeTop.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeBottom.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeTopLeft.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeTopRight.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeBottomLeft.Visibility = System.Windows.Visibility.Hidden;
-                    Window_ResizeBottomRight.Visibility = System.Windows.Visibility.Hidden;
                 }
             }
         }
@@ -189,15 +131,6 @@ namespace ThemedWindows
 
         Grid Window_Grid = new Grid();
 
-        Thumb Window_ResizeLeft = new Thumb();
-        Thumb Window_ResizeRight = new Thumb();
-        Thumb Window_ResizeTop = new Thumb();
-        Thumb Window_ResizeBottom = new Thumb();
-        Thumb Window_ResizeTopLeft = new Thumb();
-        Thumb Window_ResizeTopRight = new Thumb();
-        Thumb Window_ResizeBottomLeft = new Thumb();
-        Thumb Window_ResizeBottomRight = new Thumb();
-
         Grid Window_TitleGrid = new Grid();
         Label Window_TitleLabel = new Label();
         Button Window_Button_Close = new Button();
@@ -222,24 +155,18 @@ namespace ThemedWindows
             TitleIcon.Height = 16;
             TitleIcon.Margin = new Thickness(8, 0, 0, 0);
 
-            Icon = BlackFox.Win32.Icons.IconFromExtensionShell(".exe", BlackFox.Win32.Icons.SystemIconSize.Small);
-            TitleIcon.Source = BlackFox.Win32.Icons.IconFromExtensionShell(".exe", BlackFox.Win32.Icons.SystemIconSize.Small);
+            Icon = Icons.IconFromExtensionShell(".exe",Icons.SystemIconSize.Small);
+            TitleIcon.Source = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
 
-            //Icon = System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
-            //    ico.Handle,
-            //    new Int32Rect(0,0,ico.Width, ico.Height),
-            //    BitmapSizeOptions.FromEmptyOptions()
-            //);
             TitleIcon.SetBinding(Image.SourceProperty, new Binding() { Path = new PropertyPath("Icon"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
 
             this.MinWidth = 50;
             this.MinHeight = TITLE_BAR_HEIGHT;
             IsColorPickerEnabled = true;
-            IsEpileptic = false;
             IsModal = false;
             Window_TitleLabel.SetBinding(Label.ContentProperty, new Binding() { Path = new PropertyPath("Title"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
-            this.Activated += new EventHandler(ExpressionWindow_Activated);
-            this.Deactivated += new EventHandler(ExpressionWindow_Deactivated);
+            this.Activated += ExpressionWindow_Activated;
+            this.Deactivated += ExpressionWindow_Deactivated;
             if (FrameLoaded)
                 themeColor = ((ExpressionWindow)Application.Current.MainWindow).ThemeColor;
             else
@@ -248,12 +175,41 @@ namespace ThemedWindows
                 FrameLoaded = true;
             }
 
+            Chrome = new WindowChrome();
+            Chrome.CaptionHeight = TITLE_BAR_HEIGHT;
+            Chrome.CornerRadius = new CornerRadius(0);
+            Chrome.ResizeBorderThickness = new Thickness(RESIZE_HANDLE_SIZE);
+            Chrome.GlassFrameThickness = new Thickness(0);
+            WindowChrome.SetWindowChrome(this, Chrome);
+
             Initialize();
+        }
+
+        protected override void OnStateChanged(EventArgs e)
+        {
+            base.OnStateChanged(e);
+
+            if (Window.GetWindow(this).WindowState == System.Windows.WindowState.Maximized)
+            {
+                Window_Border.Margin = new Thickness(4,6,4,4);
+                Window_Button_Maximize.Content = 2;
+                Window_Button_Close.Width = X_BUTTON_MAXIMIZED_WIDTH;
+                Window_Button_Close.Margin = X_BUTTON_MAXIMIZED_MARGIN;
+            }
+            else
+            {
+                Window_Border.Margin = new Thickness(0);
+                Window_Button_Maximize.Content = 1;
+                Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
+                Window_Button_Close.Margin = X_BUTTON_NORMAL_MARGIN;
+            }
         }
 
         protected virtual void ExpressionWindow_Deactivated(object sender, EventArgs e)
         {
-            this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+            System.Threading.Thread.Sleep(10);
+            if(Utilities.ApplicationIsActivated())
+                this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
         }
 
         protected virtual void ExpressionWindow_Activated(object sender, EventArgs e)
@@ -279,9 +235,6 @@ namespace ThemedWindows
 
         void Initialize()
         {
-            base.ResizeMode = System.Windows.ResizeMode.CanMinimize;
-            base.WindowStyle = System.Windows.WindowStyle.None;
-
             Window_Border = new Border();
             this.Content = Window_Border;
 
@@ -292,90 +245,11 @@ namespace ThemedWindows
             Window_Grid.Children.Add(Window_TitleGrid);
             Window_Content_Grid.Children.Add(ContentPlaceHolder);
             Window_Grid.Children.Add(Window_Content_Grid);
-            Window_Grid.Children.Add(Window_ResizeLeft);
-            Window_Grid.Children.Add(Window_ResizeRight);
-            Window_Grid.Children.Add(Window_ResizeTop);
-            Window_Grid.Children.Add(Window_ResizeBottom);
-            Window_Grid.Children.Add(Window_ResizeTopLeft);
-            Window_Grid.Children.Add(Window_ResizeTopRight);
-            Window_Grid.Children.Add(Window_ResizeBottomLeft);
-            Window_Grid.Children.Add(Window_ResizeBottomRight);
-
-            #region RESIZE
-            Window_ResizeLeft.Opacity = 0;
-            Window_ResizeLeft.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeLeft.Margin = new Thickness(-6, 10, 0, 10);
-            Window_ResizeLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            Window_ResizeLeft.Cursor = Cursors.SizeWE;
-            Window_ResizeLeft.DragDelta += Resize_Left;
-
-            Window_ResizeRight.Opacity = 0;
-            Window_ResizeRight.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
-            Window_ResizeRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            Window_ResizeRight.Cursor = Cursors.SizeWE;
-            Window_ResizeRight.DragDelta += Resize_Right;
-
-            Window_ResizeTop.Opacity = 0;
-            Window_ResizeTop.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeTop.Margin = new Thickness(10, -6, 128, 0);
-            Window_ResizeTop.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_ResizeTop.Cursor = Cursors.SizeNS;
-            Window_ResizeTop.DragDelta += Resize_Top;
-
-            Window_ResizeBottom.Opacity = 0;
-            Window_ResizeBottom.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeBottom.Margin = new Thickness(10, 0, 10, -6);
-            Window_ResizeBottom.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            Window_ResizeBottom.Cursor = Cursors.SizeNS;
-            Window_ResizeBottom.DragDelta += Resize_Bottom;
-
-            Window_ResizeTopLeft.Opacity = 0;
-            Window_ResizeTopLeft.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeTopLeft.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeTopLeft.Margin = new Thickness(-6, -6, 0, 0);
-            Window_ResizeTopLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            Window_ResizeTopLeft.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_ResizeTopLeft.Cursor = Cursors.SizeNWSE;
-            Window_ResizeTopLeft.DragDelta += Resize_Left;
-            Window_ResizeTopLeft.DragDelta += Resize_Top;
-
-            Window_ResizeTopRight.Opacity = 0;
-            Window_ResizeTopRight.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeTopRight.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
-            Window_ResizeTopRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            Window_ResizeTopRight.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_ResizeTopRight.Cursor = Cursors.SizeNESW;
-            Window_ResizeTopRight.DragDelta += Resize_Right;
-            Window_ResizeTopRight.DragDelta += Resize_Top;
-
-            Window_ResizeBottomLeft.Opacity = 0;
-            Window_ResizeBottomLeft.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeBottomLeft.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeBottomLeft.Margin = new Thickness(-6, 0, 0, -6);
-            Window_ResizeBottomLeft.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
-            Window_ResizeBottomLeft.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            Window_ResizeBottomLeft.Cursor = Cursors.SizeNESW;
-            Window_ResizeBottomLeft.DragDelta += Resize_Left;
-            Window_ResizeBottomLeft.DragDelta += Resize_Bottom;
-
-            Window_ResizeBottomRight.Opacity = 0;
-            Window_ResizeBottomRight.Width = RESIZE_HANDLE_SIZE;
-            Window_ResizeBottomRight.Height = RESIZE_HANDLE_SIZE;
-            Window_ResizeBottomRight.Margin = new Thickness(0, 0, -6, -6);
-            Window_ResizeBottomRight.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-            Window_ResizeBottomRight.VerticalAlignment = System.Windows.VerticalAlignment.Bottom;
-            Window_ResizeBottomRight.Cursor = Cursors.SizeNWSE;
-            Window_ResizeBottomRight.DragDelta += Resize_Right;
-            Window_ResizeBottomRight.DragDelta += Resize_Bottom;
-            #endregion
 
             #region TITLE_BAR
 
             Window_TitleGrid.Height = TITLE_BAR_HEIGHT;
             Window_TitleGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_TitleGrid.MouseDown += Window_Drag;
             Window_TitleGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
             Window_TitleGrid.Children.Add(TitleIcon);
             Window_TitleGrid.Children.Add(Window_TitleLabel);
@@ -406,6 +280,7 @@ namespace ThemedWindows
             Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
             Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
             Window_Button_Close.Focusable = false;
+            WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Close, true);
 
             Window_Button_Maximize.MouseEnter += Window_Button_MouseEnter;
             Window_Button_Maximize.MouseLeave += Window_Button_MouseLeave;
@@ -423,6 +298,7 @@ namespace ThemedWindows
             Window_Button_Maximize.Width = 30;
             Window_Button_Maximize.Margin = new Thickness(0, -3, 52, 0);
             Window_Button_Maximize.Focusable = false;
+            WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Maximize, true);
 
             Window_Button_Minimize.MouseEnter += Window_Button_MouseEnter;
             Window_Button_Minimize.MouseLeave += Window_Button_MouseLeave;
@@ -440,6 +316,7 @@ namespace ThemedWindows
             Window_Button_Minimize.Width = 30;
             Window_Button_Minimize.Margin = new Thickness(0, -3, 81, 0);
             Window_Button_Minimize.Focusable = false;
+            WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Minimize, true);
 
             #endregion
 
@@ -462,13 +339,6 @@ namespace ThemedWindows
             Window_Button_Minimize.Style = (Style)this.FindResource("Window_Button_Minimize");
             Window_TitleGrid.Style = (Style)this.FindResource("Window_Frame_Title_Bar");
             Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
-
-            EpilepticTimer.Tick += new EventHandler(EpilepticTimer_Tick);
-        }
-
-        void EpilepticTimer_Tick(object sender, EventArgs e)
-        {
-            this.ThemeColor = (ThemeColors)((int)(this.ThemeColor + 1) % NB_COLORS);
         }
 
 
@@ -483,36 +353,6 @@ namespace ThemedWindows
             this.WindowState = System.Windows.WindowState.Minimized;
         }
 
-        private void MaximizeWindow()
-        {
-            _restoreLocation = new Rect { Width = Width, Height = Height, X = Left, Y = Top };
-
-            System.Windows.Forms.Screen currentScreen;
-            currentScreen = System.Windows.Forms.Screen.FromPoint(System.Windows.Forms.Cursor.Position);
-            Height = currentScreen.WorkingArea.Height;
-            Width = currentScreen.WorkingArea.Width;
-            Left = currentScreen.WorkingArea.X;
-            Top = currentScreen.WorkingArea.Y;
-
-            //Remove resize cursors
-            Window_ResizeLeft.IsEnabled = false;
-            Window_ResizeRight.IsEnabled = false;
-            Window_ResizeTop.IsEnabled = false;
-            Window_ResizeBottom.IsEnabled = false;
-            Window_ResizeTopLeft.IsEnabled = false;
-            Window_ResizeTopRight.IsEnabled = false;
-            Window_ResizeBottomLeft.IsEnabled = false;
-            Window_ResizeBottomRight.IsEnabled = false;
-
-            Window_ResizeTopRight.Margin = new Thickness(-6, 30, -6, 0);
-            Window_ResizeRight.Margin = new Thickness(0, 30, -6, 10);
-
-            //Remove border
-            Window_Border.BorderThickness = new Thickness(0);
-            Window_Button_Close.Width = X_BUTTON_MAXIMIZED_WIDTH;
-            Window_Button_Close.Margin = new Thickness(0, -3, -1, 0);
-        }
-
         private void Restore()
         {
             Height = _restoreLocation.Height;
@@ -521,17 +361,17 @@ namespace ThemedWindows
             Top = _restoreLocation.Y;
 
             //Restore resize cursors
-            Window_ResizeLeft.IsEnabled = true;
-            Window_ResizeRight.IsEnabled = true;
-            Window_ResizeTop.IsEnabled = true;
-            Window_ResizeBottom.IsEnabled = true;
-            Window_ResizeTopLeft.IsEnabled = true;
-            Window_ResizeTopRight.IsEnabled = true;
-            Window_ResizeBottomLeft.IsEnabled = true;
-            Window_ResizeBottomRight.IsEnabled = true;
+            //Window_ResizeLeft.IsEnabled = true;
+            //Window_ResizeRight.IsEnabled = true;
+            //Window_ResizeTop.IsEnabled = true;
+            //Window_ResizeBottom.IsEnabled = true;
+            //Window_ResizeTopLeft.IsEnabled = true;
+            //Window_ResizeTopRight.IsEnabled = true;
+            //Window_ResizeBottomLeft.IsEnabled = true;
+            //Window_ResizeBottomRight.IsEnabled = true;
 
-            Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
-            Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
+            //Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
+            //Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
 
             Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
 
@@ -543,32 +383,10 @@ namespace ThemedWindows
 
         private void Window_MaximizeRestore(object sender, RoutedEventArgs e)
         {
-            this.Focus();
-            if (Maximized)
-            {
-
-                Window_Button_Maximize.Content = 1;
-                Restore();
-            }
+            if (Window.GetWindow(this).WindowState == System.Windows.WindowState.Maximized)
+                SystemCommands.RestoreWindow(this);
             else
-            {
-                Window_Button_Maximize.Content = 2;
-                MaximizeWindow();
-            }
-            Maximized = !Maximized;
-            this.Focus();
-        }
-
-        private void Window_Drag(object sender, MouseButtonEventArgs e)
-        {
-            if (!Maximized)
-            {
-                try
-                {
-                    this.DragMove();
-                }
-                catch (Exception) { }
-            }
+                SystemCommands.MaximizeWindow(this);
         }
 
         private void Window_Button_MouseEnter(object sender, MouseEventArgs e)
@@ -584,70 +402,6 @@ namespace ThemedWindows
         private void Form_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
-        }
-
-        private void Resize_Left(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            if (!Maximized)
-            {
-                double width = Width;
-                double left = Left;
-
-                width -= e.HorizontalChange;
-                left += e.HorizontalChange;
-                if (MinWidth < width && width <= MaxWidth &&
-                    left > 0)
-                {
-                    Width = width;
-                    Left = left;
-                }
-            }
-        }
-
-        private void Resize_Right(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            if (!Maximized)
-            {
-                double width = Width;
-
-                width += e.HorizontalChange;
-                if (MinWidth < width && width <= MaxWidth)
-                {
-                    Width = width;
-                }
-            }
-        }
-
-        private void Resize_Top(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            if (!Maximized)
-            {
-                double height = Height;
-                double top = Top;
-
-                height -= e.VerticalChange;
-                top += e.VerticalChange;
-                if (MinWidth < height && height <= MaxWidth &&
-                    top > 0)
-                {
-                    Height = height;
-                    Top = top;
-                }
-            }
-        }
-
-        private void Resize_Bottom(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            if (!Maximized)
-            {
-                double height = Height;
-
-                height += e.VerticalChange;
-                if (MinWidth < height && height <= MaxWidth)
-                {
-                    Height = height;
-                }
-            }
         }
     }
 }
