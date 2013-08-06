@@ -9,15 +9,19 @@ using System.Windows.Media;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.ComponentModel;
+using System.Diagnostics;
 
-//////////////////////////////////////////////
-// CREDIT :
-// http://stackoverflow.com/a/616947/1775923
-// http://stackoverflow.com/a/1127795/1775923
-//////////////////////////////////////////////
-
-namespace BlackFox.Win32
+namespace ThemedWindows
 {
+    //////////////////////////////////////////////
+    // ICON UTILITIES
+    //================
+    // CREDIT :
+    // http://stackoverflow.com/a/616947/1775923
+    // http://stackoverflow.com/a/1127795/1775923
+    //////////////////////////////////////////////
+    #region IconUtilities
+
     internal static class IconUtilities
     {
         [DllImport("gdi32.dll", SetLastError = true)]
@@ -424,5 +428,42 @@ namespace BlackFox.Win32
             ExtractInformationsFromRegistryString(regString, out fileName, out index);
             return ExtractOne(fileName, index, size);
         }
+    }
+
+    #endregion
+
+    public static class Utilities
+    {
+        //////////////////////////////////////////
+        // Application IsActivated Utility
+        // CREDIT : 
+        // http://stackoverflow.com/a/7162873
+        //////////////////////////////////////////
+        #region ApplicationIsActivated
+
+        /// <summary>Returns true if the current application has focus, false otherwise</summary>
+        public static bool ApplicationIsActivated()
+        {
+            var activatedHandle = GetForegroundWindow();
+            if (activatedHandle == IntPtr.Zero)
+            {
+                return false;       // No window is currently activated
+            }
+
+            var procId = Process.GetCurrentProcess().Id;
+            int activeProcId;
+            GetWindowThreadProcessId(activatedHandle, out activeProcId);
+
+            return activeProcId == procId;
+        }
+
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
+        private static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        private static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
+
+        #endregion
     }
 }
