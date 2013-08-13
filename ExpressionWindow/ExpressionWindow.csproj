@@ -99,9 +99,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Icons\Warning.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Icons\Warning_Green.png" />
   </ItemGroup>
   <ItemGroup>
@@ -116,6 +113,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Question_Blue.png" />
+    <Resource Include="Icons\Question_Green.png" />
+    <Resource Include="Icons\Question_Grey.png" />
+    <Resource Include="Icons\Question_Orange.png" />
+    <Resource Include="Icons\Question_Pink.png" />
+    <Resource Include="Icons\Question_Purple.png" />
+    <Resource Include="Icons\Question_Red.png" />
+    <Resource Include="Icons\Question_White.png" />
+    <Resource Include="Icons\Question_Yellow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -13,14 +13,16 @@ namespace ThemedWindows
 {
     public class ExpressionMessageBox
     {
+        public enum IconType { Warning, Question }
+
         static public void Show(string Content)
         {
             Show(Content, Application.Current.MainWindow);
         }
-        static public void Show(string Content, Window Parent)
+        static public ExpressionDialog.StatusTypes Show(string Content, Window Parent, IconType icon = IconType.Warning, ExpressionDialog.DialogTypes type = ExpressionDialog.DialogTypes.Ok, params string[] ButtonNames)
         {
             //Create the dialog
-            ExpressionDialog dialog = new ExpressionDialog(ExpressionDialog.DialogTypes.Ok);
+            ExpressionDialog dialog = new ExpressionDialog(type, ButtonNames);
             dialog.Owner = Parent;
 
             //Fill the dialog
@@ -31,9 +33,19 @@ namespace ThemedWindows
             string ColorS = "_";
             if (Application.Current.MainWindow is ExpressionWindow)
                 ColorS += Enum.GetName(typeof(ExpressionWindow.ThemeColors), ((ExpressionWindow)Application.Current.MainWindow).ThemeColor);
+            BitmapImage IconBmp = null;
+            switch (icon)
+                {
+                    case IconType.Warning:
+                        IconBmp = new BitmapImage(new Uri("pack://application:,,,/ExpressionWindow;component/icons/warning" + ColorS + ".png"));
+                        break;
+                    case IconType.Question:
+                        IconBmp = new BitmapImage(new Uri("pack://application:,,,/ExpressionWindow;component/Icons/Question" + ColorS + ".png"));
+                        break;
+                }
             Image Icon = new Image()
             {
-                Source = new BitmapImage(new Uri("pack://application:,,,/ExpressionWindow;component/icons/warning" + ColorS + ".png")),
+                Source = IconBmp,
                 Stretch = System.Windows.Media.Stretch.None,
                 Margin = new Thickness(10)
             };
@@ -53,6 +65,8 @@ namespace ThemedWindows
 
             //Show the dialog
             dialog.ShowDialog();
+
+            return dialog.Status;
         }
     }
 }
