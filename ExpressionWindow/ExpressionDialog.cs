@@ -15,6 +15,11 @@ namespace ThemedWindows
         public static RoutedCommand CloseCommand = new RoutedCommand();
         public static RoutedCommand PrimaryCommand = new RoutedCommand();
 
+        /// <summary>
+        /// Occur when the "Save" option is used in a save/cancel dialog.
+        /// </summary>
+        static public event EventHandler DialogSaved;
+
         Border Window_Border = new Border();
         Grid Window_Content_Grid = new Grid();
         ContentControl ContentPlaceHolder = new ContentControl();
@@ -179,6 +184,8 @@ namespace ThemedWindows
         protected virtual void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             this.Status = StatusTypes.Save;
+            if (DialogSaved != null)
+                DialogSaved(this, EventArgs.Empty);
             this.Close();
         }
 
