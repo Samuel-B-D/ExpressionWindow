@@ -26,7 +26,7 @@ namespace ThemedWindows
 
         String[] Names = null;
 
-        public enum DialogTypes { SaveCancel, Ok, Cancel, SaveDiscardCancel };
+        public enum DialogTypes { None, SaveCancel, Ok, Cancel, SaveDiscardCancel };
         public DialogTypes DialogType { get; private set; }
 
         private Grid Footer;
@@ -67,126 +67,129 @@ namespace ThemedWindows
             base.ResizeMode = System.Windows.ResizeMode.CanMinimize;
             base.WindowStyle = System.Windows.WindowStyle.None;
 
-            //Create Content Grid
-            Window_Content_Grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-            Window_Content_Grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
-
-            Grid FooterFill = new Grid()
+            if (Type != DialogTypes.None)
             {
-                Height = 36,
-                Background = ExpressionWindow.BackgroundColorBrush
-            };
-            Footer = new Grid();
-            Grid.SetRow(FooterFill, 1);
-            Grid.SetColumnSpan(FooterFill, 2);
-            FooterFill.Children.Add(Footer);
-            Window_Content_Grid.Children.Add(FooterFill);
+                //Create Content Grid
+                Window_Content_Grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
+                Window_Content_Grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
-            switch (Type)
-            {
-                case DialogTypes.Ok:
-                    Button Button_Ok = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 0 ? "Ok" : Names[0],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Ok.Click += ButtonOk_Click;
-                    Footer.Children.Add(Button_Ok);
-                    this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonOk_Click));
-                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonOk_Click));
-                    break;
-                case DialogTypes.Cancel:
-                    Button Button_Cancel = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 0 ? "Cancel" : Names[0],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Cancel.Click += ButtonCancel_Click;
-                    Footer.Children.Add(Button_Cancel);
-                    this.CommandBindings.Add(new CommandBinding(CloseCommand));
-                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand));
-                    break;
-                case DialogTypes.SaveCancel:
-                    Footer.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                    Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-                    Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                Grid FooterFill = new Grid()
+                {
+                    Height = 36,
+                    Background = ExpressionWindow.BackgroundColorBrush
+                };
+                Footer = new Grid();
+                Grid.SetRow(FooterFill, 1);
+                Grid.SetColumnSpan(FooterFill, 2);
+                FooterFill.Children.Add(Footer);
+                Window_Content_Grid.Children.Add(FooterFill);
 
-                    Button Button_Cancel2 = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 1 ? "Cancel" : Names[1],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Cancel2.Click += ButtonCancel_Click;
-                    Grid.SetColumn(Button_Cancel2, 1);
-                    Footer.Children.Add(Button_Cancel2);
+                switch (Type)
+                {
+                    case DialogTypes.Ok:
+                        Button Button_Ok = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 0 ? "Ok" : Names[0],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Ok.Click += ButtonOk_Click;
+                        Footer.Children.Add(Button_Ok);
+                        this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonOk_Click));
+                        this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonOk_Click));
+                        break;
+                    case DialogTypes.Cancel:
+                        Button Button_Cancel = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 0 ? "Cancel" : Names[0],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Cancel.Click += ButtonCancel_Click;
+                        Footer.Children.Add(Button_Cancel);
+                        this.CommandBindings.Add(new CommandBinding(CloseCommand));
+                        this.CommandBindings.Add(new CommandBinding(PrimaryCommand));
+                        break;
+                    case DialogTypes.SaveCancel:
+                        Footer.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                        Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
-                    Button Button_Save = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 0 ? "Save" : Names[0],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Save.Click += ButtonSave_Click;
-                    Footer.Children.Add(Button_Save);
-                    this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonCancel_Click));
-                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonSave_Click));
-                    break;
+                        Button Button_Cancel2 = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 1 ? "Cancel" : Names[1],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Cancel2.Click += ButtonCancel_Click;
+                        Grid.SetColumn(Button_Cancel2, 1);
+                        Footer.Children.Add(Button_Cancel2);
 
-                case DialogTypes.SaveDiscardCancel:
-                    Footer.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
-                    Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-                    Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
-                    Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                        Button Button_Save = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 0 ? "Save" : Names[0],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Save.Click += ButtonSave_Click;
+                        Footer.Children.Add(Button_Save);
+                        this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonCancel_Click));
+                        this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonSave_Click));
+                        break;
 
-                    Button Button_Save3 = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 0 ? "Save" : Names[0],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Save3.Click += ButtonSave_Click;
-                    Footer.Children.Add(Button_Save3);
+                    case DialogTypes.SaveDiscardCancel:
+                        Footer.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
+                        Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                        Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
+                        Footer.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto) });
 
-                    Button Button_Discard3 = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 1 ? "Discard" : Names[1],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Discard3.Click += ButtonDiscard_Click;
-                    Grid.SetColumn(Button_Discard3, 1);
-                    Footer.Children.Add(Button_Discard3);
+                        Button Button_Save3 = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 0 ? "Save" : Names[0],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Save3.Click += ButtonSave_Click;
+                        Footer.Children.Add(Button_Save3);
 
-                    Button Button_Cancel3 = new Button()
-                    {
-                        Content = Names == null || Names.Length <= 2 ? "Cancel" : Names[2],
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Padding = new Thickness(10, 5, 10, 5),
-                        Margin = new Thickness(5)
-                    };
-                    Button_Cancel3.Click += ButtonCancel_Click;
-                    Grid.SetColumn(Button_Cancel3, 2);
-                    Footer.Children.Add(Button_Cancel3);
+                        Button Button_Discard3 = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 1 ? "Discard" : Names[1],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Discard3.Click += ButtonDiscard_Click;
+                        Grid.SetColumn(Button_Discard3, 1);
+                        Footer.Children.Add(Button_Discard3);
 
-                    this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonCancel_Click));
-                    this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonSave_Click));
-                    break;
+                        Button Button_Cancel3 = new Button()
+                        {
+                            Content = Names == null || Names.Length <= 2 ? "Cancel" : Names[2],
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            Padding = new Thickness(10, 5, 10, 5),
+                            Margin = new Thickness(5)
+                        };
+                        Button_Cancel3.Click += ButtonCancel_Click;
+                        Grid.SetColumn(Button_Cancel3, 2);
+                        Footer.Children.Add(Button_Cancel3);
+
+                        this.CommandBindings.Add(new CommandBinding(CloseCommand, ButtonCancel_Click));
+                        this.CommandBindings.Add(new CommandBinding(PrimaryCommand, ButtonSave_Click));
+                        break;
+                }
             }
         }
 
