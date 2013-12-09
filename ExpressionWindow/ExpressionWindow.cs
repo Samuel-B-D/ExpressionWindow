@@ -165,8 +165,8 @@ namespace ThemedWindows
             IsColorPickerEnabled = true;
             IsModal = false;
             Window_TitleLabel.SetBinding(Label.ContentProperty, new Binding() { Path = new PropertyPath("Title"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
-            this.Activated += ExpressionWindow_Activated;
-            this.Deactivated += ExpressionWindow_Deactivated;
+            //this.Activated += ExpressionWindow_Activated;
+            //this.Deactivated += ExpressionWindow_Deactivated;
             if (FrameLoaded)
                 themeColor = ((ExpressionWindow)Application.Current.MainWindow).ThemeColor;
             else
@@ -183,6 +183,21 @@ namespace ThemedWindows
             WindowChrome.SetWindowChrome(this, Chrome);
 
             Initialize();
+
+            Application.Current.Deactivated += Current_Deactivated;
+            Application.Current.Activated += Current_Activated;
+        }
+
+        void Current_Activated(object sender, EventArgs e)
+        {
+            foreach (Window w in Application.Current.Windows)
+                w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+        }
+
+        public virtual void Current_Deactivated(object sender, EventArgs e)
+        {
+            foreach (Window w in Application.Current.Windows)
+                w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -205,17 +220,17 @@ namespace ThemedWindows
             }
         }
 
-        protected virtual void ExpressionWindow_Deactivated(object sender, EventArgs e)
-        {
-            System.Threading.Thread.Sleep(10);
-            if(Utilities.ApplicationIsActivated())
-                this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
-        }
+        //protected virtual void ExpressionWindow_Deactivated(object sender, EventArgs e)
+        //{
+        //    System.Threading.Thread.Sleep(10);
+        //    if(Utilities.ApplicationIsActivated())
+        //        this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+        //}
 
-        protected virtual void ExpressionWindow_Activated(object sender, EventArgs e)
-        {
-            this.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-        }
+        //protected virtual void ExpressionWindow_Activated(object sender, EventArgs e)
+        //{
+        //    this.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+        //}
 
         protected override void OnContentChanged(object oldContent, object newContent)
         {
