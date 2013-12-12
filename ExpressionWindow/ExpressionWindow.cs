@@ -24,7 +24,8 @@ namespace ThemedWindows
         const int TITLE_BAR_HEIGHT = 24;
         const int RESIZE_HANDLE_SIZE = 6;
 
-        public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey, White }
+        const ThemeColors DEFAULT_COLOR = ThemeColors.Blue;
+        public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey }
         private const int X_BUTTON_NORMAL_WIDTH = 48;
         private const int X_BUTTON_MAXIMIZED_WIDTH = 53;
         private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, -3, 5, 0);
@@ -43,21 +44,22 @@ namespace ThemedWindows
             set
             {
                 themeColor = value;
-                //if (CurrentTheme == null)
-                //    CurrentTheme = new ResourceDictionary();
 
                 Application.Current.Resources.MergedDictionaries.Clear();
+                Application.Current.Resources.Clear();
 
                 string ColorS = Enum.GetName(typeof(ThemeColors), value);
                 ResourceDictionary CurrentTheme = new ResourceDictionary();
                 CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
-                Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
-
-                ResourceDictionary BaseTheme = new ResourceDictionary();
-                BaseTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/ExpressionDarkBase.xaml");
-                Application.Current.Resources.MergedDictionaries.Add(BaseTheme);
+                Application.Current.Resources = CurrentTheme;
 
                 RefreshStaticColors();
+
+                Window_Button_Close.Style = (Style)this.FindResource("Window_Button_Close");
+                Window_Button_Maximize.Style = (Style)this.FindResource("Window_Button_Maximize");
+                Window_Button_Minimize.Style = (Style)this.FindResource("Window_Button_Minimize");
+                Window_TitleGrid.Style = (Style)this.FindResource("Window_Frame_Title_Bar");
+                Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
             }
         }
 
@@ -169,7 +171,7 @@ namespace ThemedWindows
                 themeColor = ((ExpressionWindow)Application.Current.MainWindow).ThemeColor;
             else
             {
-                ThemeColor = ThemeColors.Green;
+                ThemeColor = DEFAULT_COLOR;
                 FrameLoaded = true;
             }
 
@@ -189,14 +191,12 @@ namespace ThemedWindows
         public virtual void Current_Activated(object sender, EventArgs e)
         {
             foreach (ExpressionWindow w in Application.Current.Windows)
-                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
                 w.IsForeground = true;
         }
 
         public virtual void Current_Deactivated(object sender, EventArgs e)
         {
             foreach (ExpressionWindow w in Application.Current.Windows)
-                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
                 w.IsForeground = false;
         }
 

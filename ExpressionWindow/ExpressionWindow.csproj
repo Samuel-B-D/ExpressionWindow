@@ -67,10 +67,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\WhiteColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Themes\RedColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
