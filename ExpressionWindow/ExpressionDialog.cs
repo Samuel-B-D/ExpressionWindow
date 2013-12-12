@@ -199,13 +199,15 @@ namespace ThemedWindows
         public virtual void ExpressionDialog_Deactivated(object sender, EventArgs e)
         {
             foreach (var w in Application.Current.Windows.OfType<ExpressionWindow>())
-                w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                w.IsEnabled = true;
         }
 
         public virtual void ExpressionDialog_Activated(object sender, EventArgs e)
         {
- 	        foreach (var w in Application.Current.Windows.OfType<ExpressionWindow>())
-                w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+            foreach (var w in Application.Current.Windows.OfType<ExpressionWindow>())
+                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+                w.IsEnabled = false;
         }
 
         protected virtual void ButtonOk_Click(object sender, RoutedEventArgs e)

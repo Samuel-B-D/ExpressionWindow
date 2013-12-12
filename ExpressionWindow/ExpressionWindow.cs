@@ -24,16 +24,15 @@ namespace ThemedWindows
         const int TITLE_BAR_HEIGHT = 24;
         const int RESIZE_HANDLE_SIZE = 6;
 
-        ResourceDictionary BaseTheme;
-        ResourceDictionary CurrentTheme;
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey, White }
         private const int X_BUTTON_NORMAL_WIDTH = 48;
         private const int X_BUTTON_MAXIMIZED_WIDTH = 53;
         private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, -3, 5, 0);
         private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, -3, 0, 0);
-        bool Maximized = false;
         private Rect _restoreLocation;
-        bool BaseResourceLoaded = false;
+
+        Brush TitleEnabledBackground;
+        Brush TitleDisabledBackground;
 
         WindowChrome Chrome;
 
@@ -44,22 +43,21 @@ namespace ThemedWindows
             set
             {
                 themeColor = value;
-                if (CurrentTheme is ResourceDictionary)
-                    Application.Current.Resources.MergedDictionaries.Remove(CurrentTheme);
-                else
-                    CurrentTheme = new ResourceDictionary();
+                //if (CurrentTheme == null)
+                //    CurrentTheme = new ResourceDictionary();
+
+                Application.Current.Resources.MergedDictionaries.Clear();
 
                 string ColorS = Enum.GetName(typeof(ThemeColors), value);
+                ResourceDictionary CurrentTheme = new ResourceDictionary();
                 CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
                 Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
 
-                if (!BaseResourceLoaded)
-                {
-                    BaseTheme = new ResourceDictionary();
-                    BaseTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/ExpressionDarkBase.xaml");
-                    Application.Current.Resources.MergedDictionaries.Add(BaseTheme);
-                    BaseResourceLoaded = true;
-                }
+                ResourceDictionary BaseTheme = new ResourceDictionary();
+                BaseTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/ExpressionDarkBase.xaml");
+                Application.Current.Resources.MergedDictionaries.Add(BaseTheme);
+
+                RefreshStaticColors();
             }
         }
 
@@ -188,16 +186,45 @@ namespace ThemedWindows
             Application.Current.Activated += Current_Activated;
         }
 
-        void Current_Activated(object sender, EventArgs e)
+        public virtual void Current_Activated(object sender, EventArgs e)
         {
-            foreach (Window w in Application.Current.Windows)
-                w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+            foreach (ExpressionWindow w in Application.Current.Windows)
+                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
+                w.IsForeground = true;
         }
 
         public virtual void Current_Deactivated(object sender, EventArgs e)
         {
-            foreach (Window w in Application.Current.Windows)
-                w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+            foreach (ExpressionWindow w in Application.Current.Windows)
+                //w.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
+                w.IsForeground = false;
+        }
+
+        void RefreshStaticColors()
+        {
+            if (Window_TitleGrid != null && Window_TitleGrid.Background != null)
+            {
+                TitleEnabledBackground = Window_TitleGrid.Background.CloneCurrentValue();
+                TitleDisabledBackground = TitleEnabledBackground.CloneCurrentValue();
+                TitleDisabledBackground.Opacity = 0.4;
+                TitleEnabledBackground.Freeze();
+                TitleDisabledBackground.Freeze();
+            }
+        }
+
+        public bool isForeground = true;
+        public bool IsForeground
+        {
+            get { return isForeground; }
+            set
+            {
+                isForeground = value;
+                this.Window_TitleGrid.Background = value ? TitleEnabledBackground : TitleDisabledBackground;
+
+                Window_Button_Close.Style = value ? (Style)this.FindResource("Window_Button_Close") : (Style)this.FindResource("Window_Button_Close_Disabled");
+                Window_Button_Maximize.Style = value ? (Style)this.FindResource("Window_Button_Maximize") : (Style)this.FindResource("Window_Button_Maximize_Disabled");
+                Window_Button_Minimize.Style = value ? (Style)this.FindResource("Window_Button_Minimize") : (Style)this.FindResource("Window_Button_Minimize_Disabled");
+            }
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -219,18 +246,6 @@ namespace ThemedWindows
                 Window_Button_Close.Margin = X_BUTTON_NORMAL_MARGIN;
             }
         }
-
-        //protected virtual void ExpressionWindow_Deactivated(object sender, EventArgs e)
-        //{
-        //    System.Threading.Thread.Sleep(10);
-        //    if(Utilities.ApplicationIsActivated())
-        //        this.OpacityMask = new SolidColorBrush(Color.FromArgb(120, 0, 0, 0));
-        //}
-
-        //protected virtual void ExpressionWindow_Activated(object sender, EventArgs e)
-        //{
-        //    this.OpacityMask = new SolidColorBrush(Color.FromArgb(255, 0, 0, 0));
-        //}
 
         protected override void OnContentChanged(object oldContent, object newContent)
         {
@@ -354,6 +369,8 @@ namespace ThemedWindows
             Window_Button_Minimize.Style = (Style)this.FindResource("Window_Button_Minimize");
             Window_TitleGrid.Style = (Style)this.FindResource("Window_Frame_Title_Bar");
             Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
+
+            RefreshStaticColors();
         }
 
 
