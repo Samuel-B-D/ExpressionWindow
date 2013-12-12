@@ -32,6 +32,10 @@ namespace ThemedWindows
         private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, -3, 0, 0);
         private Rect _restoreLocation;
 
+        bool CloseMouseDown = false;
+        bool MaximizeMouseDown = false;
+        bool MinimizeMouseDown = false;
+
         Brush TitleEnabledBackground;
         Brush TitleDisabledBackground;
 
@@ -190,13 +194,13 @@ namespace ThemedWindows
 
         public virtual void Current_Activated(object sender, EventArgs e)
         {
-            foreach (ExpressionWindow w in Application.Current.Windows)
+            foreach (ExpressionWindow w in Application.Current.Windows.OfType<ExpressionWindow>())
                 w.IsForeground = true;
         }
 
         public virtual void Current_Deactivated(object sender, EventArgs e)
         {
-            foreach (ExpressionWindow w in Application.Current.Windows)
+            foreach (ExpressionWindow w in Application.Current.Windows.OfType<ExpressionWindow>())
                 w.IsForeground = false;
         }
 
@@ -372,7 +376,6 @@ namespace ThemedWindows
 
             RefreshStaticColors();
         }
-
 
         private void Window_Close(object sender, RoutedEventArgs e)
         {
