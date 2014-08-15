@@ -18,7 +18,7 @@
         in order for StaticResource to function properly.
         (And StaticResource increase performances a little bit)
     -->
-    
+
     <!-- EXPRESSION COMMON VALUES -->
 
     <LinearGradientBrush x:Key="ShineBrush" EndPoint="0.5,0.971" StartPoint="0.5,0.042">
@@ -2247,11 +2247,11 @@
                             <RowDefinition/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
-                        <Grid Grid.Row="0" Grid.Column="0" Background="{TemplateBinding Background}">
-                            <ScrollContentPresenter />
+
+                        <Grid Grid.Row="0" Grid.Column="0" Background="{TemplateBinding Background}" Margin="{TemplateBinding Margin}">
+                            <ScrollContentPresenter Margin="{TemplateBinding Padding}" />
                         </Grid>
-                        
+
                         <ScrollBar x:Name="PART_VerticalScrollBar" Grid.Row="0" Grid.Column="1" Value="{TemplateBinding VerticalOffset}" Maximum="{TemplateBinding ScrollableHeight}" ViewportSize="{TemplateBinding ViewportHeight}" Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
                         <ScrollBar x:Name="PART_HorizontalScrollBar" Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Value="{TemplateBinding HorizontalOffset}" Maximum="{TemplateBinding ScrollableWidth}" ViewportSize="{TemplateBinding ViewportWidth}" Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
                         <!--<Rectangle Grid.Row="1" Grid.Column="1" Fill="Red"/>-->
@@ -3062,6 +3062,30 @@
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}"/>
+    </Style>
+    <Style x:Key="NUD_TextBox" TargetType="{x:Type TextBox}">
+        <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
+        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+        <Setter Property="AllowDrop" Value="true" />
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Margin="{TemplateBinding Margin}" x:Name="Border" Opacity="1" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2,2,2,2" Background="{TemplateBinding Background}">
+                        <ScrollViewer VerticalAlignment="{TemplateBinding VerticalContentAlignment}" x:Name="PART_ContentHost" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" TargetName="Border" Value="{StaticResource DisabledBackgroundBrush}" />
+                            <Setter Property="BorderBrush" TargetName="Border" Value="{StaticResource DisabledBorderBrush}" />
+                            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style TargetType="{x:Type PasswordBox}">

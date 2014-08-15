@@ -3142,9 +3142,9 @@
         <Setter Property="KeyboardNavigation.TabNavigation" Value="None" />
         <Setter Property="FocusVisualStyle" Value="{x:Null}" />
         <Setter Property="AllowDrop" Value="true" />
-        <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-        <Setter Property="Background" Value="{StaticResource ControlBackgroundBrush}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource WindowBorderBrush}"/>
+        <Setter Property="Foreground" Value="{DynamicResource TextBrush}" />
+        <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource WindowBorderBrush}"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -4793,8 +4793,4 @@
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
     </Style>
 
-    <Style TargetType="local:NumericUpDown">
-        
-    </Style>
-    
 </ResourceDictionary>
