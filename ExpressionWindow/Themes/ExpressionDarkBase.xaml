@@ -4,6 +4,24 @@
 // Please see http://go.microsoft.com/fwlink/?LinkID=131993 for details.
 // All other rights reserved.
 -->
+    
+<!-- 
+    INSTUCTIONS TO ENABLE THEME IN DESIGNER :
+    
+    1. Copy the theme .xaml of the theme you wish to preview in Visual Studio Designer in your project's root.
+    
+    2. Add this block of code in the App.xaml file :
+    
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/[Color Wanted]Colors.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+    
+    (Change the color to the one you want to preview)
+ -->
 
 <ResourceDictionary
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
