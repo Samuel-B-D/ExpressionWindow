@@ -43,12 +43,13 @@
         <RadioButton Content="RadioButton" Height="16" HorizontalAlignment="Left" Margin="146,271,0,0" Name="radioButton1" VerticalAlignment="Top" />
         <RadioButton Content="RadioButton" Height="16" HorizontalAlignment="Left" Margin="251,271,0,0" Name="radioButton2" VerticalAlignment="Top" />
         <Slider Height="23" HorizontalAlignment="Left" Margin="146,145,0,0" Name="slider1" VerticalAlignment="Top" Width="100" />
-        <TreeView Height="394" HorizontalAlignment="Left" Margin="362,56,0,0" Name="treeView1" VerticalAlignment="Top" Width="290">
+        <TreeView Height="80" HorizontalAlignment="Left" ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Visible" Margin="362,56,0,0" Name="treeView1" VerticalAlignment="Top" Width="157">
             <TreeViewItem Header="fhjfghjfghj">
                 <TreeViewItem Header="ghfjgj" />
             </TreeViewItem>
             <TreeViewItem Header="fgjfgjfj" />
         </TreeView>
+        <ScrollViewer Margin="541,56,66,372" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" />
         <ScrollBar Margin="12,433,332,43" Orientation="Horizontal" RenderTransformOrigin="0.438,2.412" />
         <ScrollBar Margin="657,56,4,43" />
         <Calendar Height="170" HorizontalAlignment="Left" Margin="432,145,0,0" Name="calendar1" VerticalAlignment="Top" Width="180" />

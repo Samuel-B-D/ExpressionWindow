@@ -22,8 +22,7 @@ namespace ThemedWindows
         static public ExpressionDialog.StatusTypes Show(string Content, Window Parent, IconType icon = IconType.Warning, ExpressionDialog.DialogTypes type = ExpressionDialog.DialogTypes.Ok, params string[] ButtonNames)
         {
             //Create the dialog
-            ExpressionDialog dialog = new ExpressionDialog(type, ButtonNames);
-            dialog.Owner = Parent;
+            ExpressionDialog dialog = new ExpressionDialog(type, Parent, ButtonNames);
 
             //Fill the dialog
             Grid ContentGrid = new Grid();

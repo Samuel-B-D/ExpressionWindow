@@ -47,7 +47,15 @@ namespace ThemedWindows
             Initialize(Type);
         }
 
-        public void Initialize(DialogTypes Type)
+        public ExpressionDialog(DialogTypes Type, Window Owner, params String[] Names)
+            : base()
+        {
+            this.Names = Names;
+            Initialize(Type, Owner);
+        }
+
+        public void Initialize(DialogTypes Type) { Initialize(Type, Application.Current.MainWindow); }
+        public void Initialize(DialogTypes Type, Window Owner)
         {
             CloseCommand.InputGestures.Add(new KeyGesture(Key.Escape, ModifierKeys.None));
             PrimaryCommand.InputGestures.Add(new KeyGesture(Key.Enter, ModifierKeys.None));
@@ -60,8 +68,15 @@ namespace ThemedWindows
             Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
 
             Status = StatusTypes.None;
-            base.Owner = Application.Current.MainWindow;
-            base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            try
+            {
+                base.Owner = Owner;
+                base.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            catch (Exception)
+            {
+                base.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
             base.SizeToContent = SizeToContent.WidthAndHeight;
             base.ShowInTaskbar = false;
             base.ResizeMode = System.Windows.ResizeMode.CanMinimize;
