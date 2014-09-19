@@ -49,7 +49,7 @@ namespace ThemedWindows
             {
                 themeColor = value;
 
-                Application.Current.Resources.MergedDictionaries.Clear();
+                //Application.Current.Resources.MergedDictionaries.Clear();
                 Application.Current.Resources.Clear();
 
                 string ColorS = Enum.GetName(typeof(ThemeColors), value);
