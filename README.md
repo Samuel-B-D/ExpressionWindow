@@ -13,7 +13,7 @@ Include a color picker and a demo application.
 	### Example XAML ###
 	```
 	<EW:ExpressionWindow xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow"  
-		x:Class="TEST.MainWindow"
+		x:Class="EXAMPLE.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow">
