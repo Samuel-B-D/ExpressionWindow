@@ -32,10 +32,6 @@ namespace ThemedWindows
         private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, -3, 0, 0);
         private Rect _restoreLocation;
 
-        bool CloseMouseDown = false;
-        bool MaximizeMouseDown = false;
-        bool MinimizeMouseDown = false;
-
         Brush TitleEnabledBackground;
         Brush TitleDisabledBackground;
 
@@ -394,19 +390,6 @@ namespace ThemedWindows
             Width = _restoreLocation.Width;
             Left = _restoreLocation.X;
             Top = _restoreLocation.Y;
-
-            //Restore resize cursors
-            //Window_ResizeLeft.IsEnabled = true;
-            //Window_ResizeRight.IsEnabled = true;
-            //Window_ResizeTop.IsEnabled = true;
-            //Window_ResizeBottom.IsEnabled = true;
-            //Window_ResizeTopLeft.IsEnabled = true;
-            //Window_ResizeTopRight.IsEnabled = true;
-            //Window_ResizeBottomLeft.IsEnabled = true;
-            //Window_ResizeBottomRight.IsEnabled = true;
-
-            //Window_ResizeTopRight.Margin = new Thickness(-6, 0, -6, 0);
-            //Window_ResizeRight.Margin = new Thickness(0, 10, -6, 10);
 
             Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
 

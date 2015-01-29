@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -78,6 +79,7 @@ namespace ThemedWindows
 
         public NumericUpDown()
         {
+            stopwatch.Start();
             NeutralCaptation = null; 
             InitializeComponent();
 
@@ -101,18 +103,24 @@ namespace ThemedWindows
             }
         }
 
+        private Stopwatch stopwatch = new Stopwatch();
+
         private void ScrollBar_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            switch ((int)ScrollbarValue.Value)
+            if (stopwatch.ElapsedTicks % 1L == 0L)
             {
-                case -1:
-                    Value += Tick;
-                    break;
-                case 1:
-                    Value -= Tick;
-                    break;
+                switch ((int)ScrollbarValue.Value)
+                {
+                    case -1:
+                        Value += Tick;
+                        break;
+                    case 1:
+                        Value -= Tick;
+                        break;
+                }
+                ScrollbarValue.Value = 0;
+                stopwatch.Restart();
             }
-            ScrollbarValue.Value = 0;
         }
 
         private void TBX_Value_TextChanged_1(object sender, TextChangedEventArgs e)

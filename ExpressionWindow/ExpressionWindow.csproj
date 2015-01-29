@@ -59,9 +59,6 @@
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressionWindow.cs" />
-    <None Include="Utilities\EWPreBuild.bat" />
-    <None Include="Utilities\ResEnd.xamlgen" />
-    <None Include="Utilities\ResStart.xamlgen" />
     <Page Include="NumericUpDown.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -70,34 +67,34 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <None Include="Themes\Blue.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Green.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Grey.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Orange.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Pink.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Purple.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Red.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Themes\Yellow.xamlgen">
-      <SubType>Designer</SubType>
-    </None>
     <Page Include="Themes\GreenColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <None Include="Themes\Sources\Colors\Blue.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Green.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Grey.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Orange.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Pink.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Purple.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Red.xaml">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Themes\Sources\Colors\Yellow.xaml">
+      <SubType>Designer</SubType>
+    </None>
     <Page Include="Themes\YellowColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -124,7 +121,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Themes\ExpressionDarkBase.xamlgen">
+    <None Include="Themes\Sources\ExpressionDarkBase.xaml">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -155,12 +152,9 @@
     <Resource Include="Icons\Question_White.png" />
     <Resource Include="Icons\Question_Yellow.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Utilities\SimpleTextMerger.exe" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>$(SolutionDir)ExpressionWindow/Utilities/EWPreBuild.bat $(SolutionDir)</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)SimpleResourceDictionaryMerger\bin\$(ConfigurationName)\SimpleResourceDictionaryMerger.exe"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
