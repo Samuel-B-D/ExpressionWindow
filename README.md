@@ -11,7 +11,7 @@ Include a color picker and a demo application.
 	* Inherit `ExpressionWindow` instead of `Window` in the CodeBehind (Or `ThemedWindows.ExpressionWindow` if you didn't add the using clause)
 	
 	### Example XAML ###
-	...
+	```
 	<EW:ExpressionWindow xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow"  x:Class="TEST.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -19,10 +19,10 @@ Include a color picker and a demo application.
 		<Grid>
 		</Grid>
 	</EW:ExpressionWindow>
-	...
+	```
 	
 	### Example CodeBehind ###
-	...
+	```
 	//...
 	using ThemedWindows;
 	
@@ -36,13 +36,13 @@ Include a color picker and a demo application.
 			}
 		}
 	}
-	...
+	```
 3. Enable in-designer preview of the theme by adding the following snipped to your App.xaml :
-	...
+	```
 	<Application.Resources>
         <EW:DesignTimeResourceDictionary xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" DesignTimeColor="Green"/>
     </Application.Resources>
-	...
+	```
 
 ## TODO ##
 Redesign the yellow and white theme since they look pretty weird.
