@@ -12,7 +12,8 @@ Include a color picker and a demo application.
 	
 	### Example XAML ###
 	```
-	<EW:ExpressionWindow xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow"  x:Class="TEST.MainWindow"
+	<EW:ExpressionWindow xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow"  
+		x:Class="TEST.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow">
@@ -40,7 +41,9 @@ Include a color picker and a demo application.
 3. Enable in-designer preview of the theme by adding the following snipped to your App.xaml :
 	```
 	<Application.Resources>
-        <EW:DesignTimeResourceDictionary xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" DesignTimeColor="Green"/>
+        <EW:DesignTimeResourceDictionary 
+			xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" 
+			DesignTimeColor="Green" />
     </Application.Resources>
 	```
 
