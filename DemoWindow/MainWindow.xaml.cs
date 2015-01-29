@@ -18,7 +18,7 @@ namespace TEST
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : ExpressionWindow
+    public partial class MainWindow : ThemedWindows.ExpressionWindow
     {
         public MainWindow()
         {
