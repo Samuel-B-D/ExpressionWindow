@@ -221,9 +221,9 @@ namespace ThemedWindows
                 isForeground = value;
                 this.Window_TitleGrid.Background = value ? TitleEnabledBackground : TitleDisabledBackground;
 
-                Window_Button_Close.Style = value ? (Style)this.FindResource("Window_Button_Close") : (Style)this.FindResource("Window_Button_Close_Disabled");
-                Window_Button_Maximize.Style = value ? (Style)this.FindResource("Window_Button_Maximize") : (Style)this.FindResource("Window_Button_Maximize_Disabled");
-                Window_Button_Minimize.Style = value ? (Style)this.FindResource("Window_Button_Minimize") : (Style)this.FindResource("Window_Button_Minimize_Disabled");
+                Window_Button_Close.Tag = value ? "" : "Shaded";
+                Window_Button_Maximize.Tag = value ? "" : "Shaded";
+                Window_Button_Minimize.Tag = value ? "" : "Shaded";
             }
         }
 
@@ -375,7 +375,7 @@ namespace ThemedWindows
 
         private void Window_Close(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            SystemCommands.CloseWindow(Window.GetWindow(this));
         }
 
         private void Window_Minimize(object sender, RoutedEventArgs e)
