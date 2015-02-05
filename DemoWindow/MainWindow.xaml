@@ -13,7 +13,7 @@
             </MenuItem>
         </Menu>
         <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="96,326,432,143" />
-        <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="12,39,0,0" Name="button1" VerticalAlignment="Top" Width="75" Click="button1_Click" />
+        <Button Content="Button" HorizontalAlignment="Left" Margin="12,39,0,0" Name="button1" VerticalAlignment="Top" Click="button1_Click" />
         <ListBox Height="100" HorizontalAlignment="Left" Margin="12,68,0,0" Name="listBox1" VerticalAlignment="Top" Width="120">
             <ListBoxItem Content="stuff" />
             <ListBoxItem Content="stuff"/>
@@ -56,5 +56,6 @@
         <Calendar Height="170" HorizontalAlignment="Left" Margin="432,145,0,0" Name="calendar1" VerticalAlignment="Top" Width="180" />
         <ProgressBar Height="24" HorizontalAlignment="Left" Margin="172,195,0,0" Name="progressBar1" VerticalAlignment="Top" Width="174" Value="50" />
         <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="55,310,0,0" VerticalAlignment="Top" Width="256"/>
+        <EW:ColorButton Content="Color" BackgroundColor="Green" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top"/>
     </Grid>
 </EW:ExpressionWindow>

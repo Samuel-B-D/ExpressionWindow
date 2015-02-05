@@ -19,11 +19,12 @@
     ==_______________________________________________________________==
     == This file is generated automatically at post-compilation.     ==
     == You should NOT modify it in any ways. To edit a theme color,  ==
-    == edit the <Color>.xamlgen file. To edit the theme itself, edit ==
-    == ExpressionDarkBase.xamlgen.                                   ==
+    == edit the <Color>.xaml file in Themes/Sources/Colors.          ==
+    == To edit the theme itself, edit ExpressionDarkBase.xaml in     ==
+    == Themes/Source.                                                ==
     ===================================================================
 -->
-<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+<ResourceDictionary xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:ThemedWindows" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
   <!-- Main Colors -->
   <Color
     x:Key="MainColor">#FFFF00BC</Color>
@@ -2252,13 +2253,242 @@
       Value="{StaticResource NormalBrush}" />
     <Setter
       Property="Padding"
-      Value="5,0" />
+      Value="10,2" />
     <Setter
       Property="Template"
       Value="{StaticResource ButtonTemplate}" />
     <Setter
+      Property="Focusable"
+      Value="False" />
+    <Setter
       Property="BorderThickness"
       Value="1" />
+  </Style>
+  <Style
+    TargetType="{x:Type local:ColorButton}"
+    BasedOn="{x:Null}">
+    <Setter
+      Property="Foreground"
+      Value="{StaticResource TextBrush}" />
+    <Setter
+      Property="Padding"
+      Value="10,2" />
+    <Setter
+      Property="Focusable"
+      Value="False" />
+    <Setter
+      Property="BorderThickness"
+      Value="1" />
+    <Setter
+      Property="Template">
+      <Setter.Value>
+        <ControlTemplate
+          TargetType="{x:Type local:ColorButton}">
+          <ControlTemplate.Resources>
+            <Storyboard
+              x:Key="HoverOn">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="HoverShineBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.1000000"
+                  Value="1" />
+              </DoubleAnimationUsingKeyFrames>
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="HoverBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.1000000"
+                  Value="1" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard
+              x:Key="HoverOff">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="HoverShineBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.3000000"
+                  Value="0" />
+              </DoubleAnimationUsingKeyFrames>
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="HoverBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.3000000"
+                  Value="0" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard
+              x:Key="PressedOn">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="PressedBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.1000000"
+                  Value="1" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard
+              x:Key="PressedOff">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="PressedBorder"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.3000000"
+                  Value="0" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard
+              x:Key="FocusedOn">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="FocusVisualElement"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.1000000"
+                  Value="1" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+            <Storyboard
+              x:Key="FocussedOff">
+              <DoubleAnimationUsingKeyFrames
+                BeginTime="00:00:00"
+                Storyboard.TargetName="FocusVisualElement"
+                Storyboard.TargetProperty="(UIElement.Opacity)">
+                <SplineDoubleKeyFrame
+                  KeyTime="00:00:00.3000000"
+                  Value="0" />
+              </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+          </ControlTemplate.Resources>
+          <Grid
+            x:Name="Grid">
+            <Border
+              x:Name="Background"
+              Background="{TemplateBinding BackgroundColor}"
+              BorderBrush="{TemplateBinding BorderColor}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="3" />
+            <Border
+              x:Name="HoverBorder"
+              Opacity="0"
+              Background="{TemplateBinding HoverBorderColor}"
+              BorderBrush="{TemplateBinding HoverBorderColor}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="3" />
+            <Border
+              x:Name="HoverShineBorder"
+              Opacity="0"
+              Background="{StaticResource HoverShineBrush}"
+              BorderBrush="{TemplateBinding HoverBorderColor}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="3" />
+            <Border
+              x:Name="PressedBorder"
+              Opacity="0"
+              BorderBrush="{TemplateBinding HoverBorderColor}"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="3"
+              Background="{StaticResource PressedBrush}" />
+            <Border
+              x:Name="ShineBorder"
+              BorderBrush="Transparent"
+              BorderThickness="{TemplateBinding BorderThickness}"
+              CornerRadius="3"
+              Background="{StaticResource ShineBrush}"
+              Opacity="1" />
+            <ContentPresenter
+              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+              Margin="{TemplateBinding Padding}"
+              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+              RecognizesAccessKey="True" />
+            <Border
+              x:Name="FocusVisualElement"
+              IsHitTestVisible="false"
+              BorderBrush="{TemplateBinding HoverBorderColor}"
+              BorderThickness="1"
+              CornerRadius="3,3,3,3"
+              Margin="1,1,1,1"
+              Opacity="0" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger
+              Property="IsDefault"
+              Value="True">
+              <Setter
+                Property="BorderBrush"
+                TargetName="ShineBorder"
+                Value="{StaticResource DefaultedBorderBrush}" />
+            </Trigger>
+            <Trigger
+              Property="IsKeyboardFocused"
+              Value="true">
+              <Trigger.ExitActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource FocussedOff}"
+                  x:Name="FocussedOff_BeginStoryboard" />
+              </Trigger.ExitActions>
+              <Trigger.EnterActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource FocusedOn}"
+                  x:Name="FocusedOn_BeginStoryboard" />
+              </Trigger.EnterActions>
+            </Trigger>
+            <Trigger
+              Property="IsMouseOver"
+              Value="true">
+              <Trigger.ExitActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource HoverOff}"
+                  x:Name="HoverOff_BeginStoryboard" />
+              </Trigger.ExitActions>
+              <Trigger.EnterActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource HoverOn}" />
+              </Trigger.EnterActions>
+            </Trigger>
+            <Trigger
+              Property="IsPressed"
+              Value="true">
+              <Trigger.ExitActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource PressedOff}" />
+              </Trigger.ExitActions>
+              <Trigger.EnterActions>
+                <BeginStoryboard
+                  Storyboard="{StaticResource PressedOn}" />
+              </Trigger.EnterActions>
+            </Trigger>
+            <Trigger
+              Property="IsEnabled"
+              Value="true" />
+            <Trigger
+              Property="IsEnabled"
+              Value="false">
+              <Setter
+                Property="Background"
+                Value="{StaticResource DisabledBackgroundBrush}"
+                TargetName="Background" />
+              <Setter
+                Property="BorderBrush"
+                Value="{StaticResource DisabledBorderBrush}"
+                TargetName="ShineBorder" />
+              <Setter
+                Property="Opacity"
+                TargetName="Grid"
+                Value="0.5" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
   <Style
     x:Key="RadioButtonFocusVisual">
@@ -3795,6 +4025,65 @@
           Value="{StaticResource VerticalScrollBar}" />
       </Trigger>
     </Style.Triggers>
+  </Style>
+  <Style
+    x:Key="NUD_Scrollbar"
+    TargetType="{x:Type ScrollBar}">
+    <Setter
+      Property="SnapsToDevicePixels"
+      Value="True" />
+    <Setter
+      Property="OverridesDefaultStyle"
+      Value="true" />
+    <Setter
+      Property="Template">
+      <Setter.Value>
+        <ControlTemplate
+          TargetType="{x:Type ScrollBar}">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition
+                MaxHeight="18" />
+              <RowDefinition
+                MaxHeight="18" />
+            </Grid.RowDefinitions>
+            <Border
+              x:Name="Border"
+              Grid.RowSpan="3"
+              CornerRadius="2"
+              Background="{StaticResource ControlBackgroundBrush}"
+              BorderBrush="{StaticResource NormalBrush}"
+              BorderThickness="1" />
+            <RepeatButton
+              Grid.Row="0"
+              Style="{StaticResource VerticalScrollBarLineButton}"
+              Width="16"
+              VerticalAlignment="Stretch"
+              VerticalContentAlignment="Center"
+              Command="ScrollBar.LineUpCommand"
+              Content="M 0 4 L 8 4 L 4 0 Z" />
+            <RepeatButton
+              Grid.Row="1"
+              Width="16"
+              VerticalAlignment="Stretch"
+              VerticalContentAlignment="Center"
+              Style="{StaticResource VerticalScrollBarLineButton}"
+              Command="ScrollBar.LineDownCommand"
+              Content="M 0 0 L 4 4 L 8 0 Z" />
+          </Grid>
+          <ControlTemplate.Triggers>
+            <Trigger
+              Property="IsEnabled"
+              Value="false">
+              <Setter
+                Property="BorderBrush"
+                Value="{StaticResource ControlBackgroundBrush}"
+                TargetName="Border" />
+            </Trigger>
+          </ControlTemplate.Triggers>
+        </ControlTemplate>
+      </Setter.Value>
+    </Setter>
   </Style>
   <Style
     TargetType="{x:Type ScrollViewer}">

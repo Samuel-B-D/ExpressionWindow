@@ -22,6 +22,8 @@ namespace ThemedWindows
     /// </summary>
     public partial class NumericUpDown : UserControl
     {
+        bool TextChangedProgramatically = false;
+
         private decimal? min;
         public decimal? Min
         {
@@ -54,10 +56,12 @@ namespace ThemedWindows
                 valValue = value;
                 if (Min != null && value < Min) valValue = (decimal)Min;
                 if (Max != null && value > Max) valValue = (decimal)Max;
+                TextChangedProgramatically = true;
                 if (NeutralCaptation != null && valValue == 0)
                     TBX_Value.Text = NeutralCaptation;
                 else
                     TBX_Value.Text = valValue.ToString();
+                TextChangedProgramatically = false;
             }
         }
 
@@ -79,7 +83,6 @@ namespace ThemedWindows
 
         public NumericUpDown()
         {
-            stopwatch.Start();
             NeutralCaptation = null; 
             InitializeComponent();
 
@@ -103,43 +106,40 @@ namespace ThemedWindows
             }
         }
 
-        private Stopwatch stopwatch = new Stopwatch();
-
         private void ScrollBar_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (stopwatch.ElapsedTicks % 1L == 0L)
+            switch ((int)ScrollbarValue.Value)
             {
-                switch ((int)ScrollbarValue.Value)
-                {
-                    case -1:
-                        Value += Tick;
-                        break;
-                    case 1:
-                        Value -= Tick;
-                        break;
-                }
-                ScrollbarValue.Value = 0;
-                stopwatch.Restart();
+                case -1:
+                    Value += Tick;
+                    break;
+                case 1:
+                    Value -= Tick;
+                    break;
             }
+            ScrollbarValue.Value = 0;
         }
 
         private void TBX_Value_TextChanged_1(object sender, TextChangedEventArgs e)
         {
-            try
+            if (!TextChangedProgramatically)
             {
-                string temp = Regex.Replace(TBX_Value.Text, "[^0-9-" + System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator + "]", "");
-                valValue = decimal.Parse(temp);
-                e.Handled = true;
-                TBX_Value.Text = temp;
-            }
-            catch (Exception)
-            {
-                Value = Min != null && Min > 0 ? (decimal)Min : 0;
-            }
-            finally
-            {
-                if (ValueChanged != null)
-                    ValueChanged(this, e);
+                try
+                {
+                    string temp = Regex.Replace(TBX_Value.Text, "[^0-9-" + System.Globalization.NumberFormatInfo.CurrentInfo.NumberDecimalSeparator + "]", "");
+                    valValue = decimal.Parse(temp);
+                    e.Handled = true;
+                    TBX_Value.Text = temp;
+                }
+                catch (Exception)
+                {
+                    Value = Min != null && Min > 0 ? (decimal)Min : 0;
+                }
+                finally
+                {
+                    if (ValueChanged != null)
+                        ValueChanged(this, e);
+                }
             }
         }
     }

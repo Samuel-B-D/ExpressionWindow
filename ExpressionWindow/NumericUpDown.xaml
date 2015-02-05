@@ -7,6 +7,6 @@
              d:DesignHeight="30" d:DesignWidth="300" Height="26">
     <Grid>
         <TextBox TextChanged="TBX_Value_TextChanged_1" x:Name="TBX_Value" Text="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Right" Padding="0,0,20,0" Style="{StaticResource NUD_TextBox}" />
-        <ScrollBar x:Name="ScrollbarValue" ValueChanged="ScrollBar_ValueChanged_1" Minimum="-1" Maximum="1" VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="1" />
+        <ScrollBar x:Name="ScrollbarValue" ValueChanged="ScrollBar_ValueChanged_1" Minimum="-1" Maximum="1" VerticalAlignment="Stretch" HorizontalAlignment="Right" Margin="1" Style="{DynamicResource NUD_Scrollbar}" />
     </Grid>
 </UserControl>
