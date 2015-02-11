@@ -1,5 +1,4 @@
-﻿using MicroMvvm;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -147,7 +146,7 @@ namespace ThemedWindows.Controls
         {
             get
             {
-                return new RelayCommand(() =>
+                return new Utilities.RelayCommand(() =>
                 {
                     Value -= SmallChange;
                 });
@@ -158,7 +157,7 @@ namespace ThemedWindows.Controls
         {
             get
             {
-                return new RelayCommand(() =>
+                return new Utilities.RelayCommand(() =>
                 {
                     Value += SmallChange;
                 });
