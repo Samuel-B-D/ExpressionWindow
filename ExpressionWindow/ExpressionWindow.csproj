@@ -54,19 +54,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColorButton.cs" />
+    <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="DesignTimeResourceDictionary.cs" />
     <Compile Include="ExpressionDialog.cs" />
     <Compile Include="ExpressionMessageBox.cs" />
-    <Compile Include="NumericUpDown.xaml.cs">
-      <DependentUpon>NumericUpDown.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="RelayCommand.cs" />
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressionWindow.cs" />
-    <Page Include="NumericUpDown.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Themes\BlueColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,6 +151,7 @@
     <Resource Include="Icons\Question_White.png" />
     <Resource Include="Icons\Question_Yellow.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)SimpleResourceDictionaryMerger\bin\$(ConfigurationName)\SimpleResourceDictionaryMerger.exe"</PreBuildEvent>

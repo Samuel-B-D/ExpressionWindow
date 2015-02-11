@@ -21,6 +21,7 @@ namespace SimpleResourceDictionaryMerger
                 Root.SetAttribute("xmlns:mc", "http://schemas.openxmlformats.org/markup-compatibility/2006");
                 Root.SetAttribute("xmlns:d", "http://schemas.microsoft.com/expression/blend/2008");
                 Root.SetAttribute("xmlns:local", "clr-namespace:ThemedWindows");
+                Root.SetAttribute("xmlns:Controls", "clr-namespace:ThemedWindows.Controls");
 
                 XmlDocument baseTheme = new XmlDocument();
                 baseTheme.Load(@"..\..\..\ExpressionWindow\Themes\Sources\ExpressionDarkBase.xaml");
