@@ -18,11 +18,13 @@ namespace ThemedWindows
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public class ExpressionWindow : Window
+    public class ExpressionWindow : Window, INotifyPropertyChanged
     {
         static bool FrameLoaded = false;
         const int TITLE_BAR_HEIGHT = 24;
         const int RESIZE_HANDLE_SIZE = 6;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         const ThemeColors DEFAULT_COLOR = ThemeColors.Blue;
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey }
@@ -60,6 +62,10 @@ namespace ThemedWindows
                 Window_Button_Minimize.Style = (Style)this.FindResource("Window_Button_Minimize");
                 Window_TitleGrid.Style = (Style)this.FindResource("Window_Frame_Title_Bar");
                 Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
+
+                OnPropertyChanged("MainColorBrush");
+                OnPropertyChanged("SecondaryColorBrush");
+                OnPropertyChanged("BackgroundColorBrush");
             }
         }
 
@@ -420,6 +426,15 @@ namespace ThemedWindows
         private void Form_Close(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        protected void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
         }
     }
 }

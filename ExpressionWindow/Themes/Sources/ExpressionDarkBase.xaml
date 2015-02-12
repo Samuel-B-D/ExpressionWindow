@@ -190,7 +190,7 @@
     <Style x:Key="RepeatButtonUp" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
         <Setter Property="Background" Value="{StaticResource NormalBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource NormalBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Content">
@@ -288,7 +288,7 @@
     <Style x:Key="RepeatButtonDown" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
         <Setter Property="Background" Value="{StaticResource NormalBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
-        <Setter Property="BorderBrush" Value="{StaticResource NormalBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Content">
@@ -385,7 +385,7 @@
 
 
     <Style TargetType="{x:Type Controls:NumericUpDown}">
-        <Setter Property="BorderBrush" Value="{StaticResource NormalBrush}" />
+        <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
         <Setter Property="Background" Value="{StaticResource BackgroundBrush}" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
@@ -1593,14 +1593,14 @@
         <Setter Property="BorderThickness" Value="1" />
     </Style>
 
-    <Style TargetType="{x:Type local:ColorButton}" BasedOn="{x:Null}">
+    <Style TargetType="{x:Type Controls:ColorButton}" BasedOn="{x:Null}">
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="Padding" Value="10,2" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:ColorButton}">
+                <ControlTemplate TargetType="{x:Type Controls:ColorButton}">
                     <ControlTemplate.Resources>
                         <Storyboard x:Key="HoverOn">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="HoverShineBorder" Storyboard.TargetProperty="(UIElement.Opacity)">
@@ -3254,7 +3254,7 @@ Content="M 0 0 L 4 4 L 0 8 Z"/>
             <Border x:Name="Border" Opacity="1" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2,2,2,2" Background="{TemplateBinding Background}">
                 <Grid>
                     <Border>
-                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Cursor="IBeam" />
+                        <ScrollViewer Margin="0" x:Name="PART_ContentHost" HorizontalAlignment="Stretch" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Cursor="IBeam" />
                     </Border>
                 </Grid>
             </Border>
@@ -3654,7 +3654,7 @@ Content="M 0 0 L 4 4 L 0 8 Z"/>
                             <RowDefinition Height="Auto" x:Name="RowDefinition0" />
                             <RowDefinition Height="*" x:Name="RowDefinition1" />
                         </Grid.RowDefinitions>
-                        <Border CornerRadius="2,2,0,0" Background="{StaticResource LightBrush}" x:Name="border">
+                        <Border CornerRadius="2,2,0,0" Background="Transparent" x:Name="border">
                             <TabPanel x:Name="HeaderPanel" IsItemsHost="true" Panel.ZIndex="1" KeyboardNavigation.TabIndex="1" RenderTransformOrigin="0.5,0.5" Width="Auto" Height="Auto">
                                 <TabPanel.LayoutTransform>
                                     <TransformGroup>
@@ -3675,10 +3675,10 @@ Content="M 0 0 L 4 4 L 0 8 Z"/>
 
                             </TabPanel>
                         </Border>
-                        <Border x:Name="ContentPanel" Grid.Column="0" Grid.Row="1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" Background="{StaticResource ShadeBrush}" CornerRadius="0,0,2,2">
+                        <Border Background="{StaticResource LightBrush}" x:Name="ContentPanel" Grid.Column="0" Grid.Row="1" KeyboardNavigation.DirectionalNavigation="Contained" KeyboardNavigation.TabIndex="2" KeyboardNavigation.TabNavigation="Local" CornerRadius="0,0,2,2">
                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" x:Name="PART_SelectedContentHost" ContentSource="SelectedContent" />
                         </Border>
-                        <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" BorderThickness="0,0,0,1" CornerRadius="10,0,0,0" Opacity="0.5" Margin="2,0,2,0" x:Name="border1">
+                        <Border BorderBrush="{StaticResource NormalBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Width="Auto" Height="Auto" BorderThickness="0,0,0,1" CornerRadius="10,0,0,0" Opacity="0.5" Margin="2,0,2,0" x:Name="border1">
                             <Border.LayoutTransform>
                                 <TransformGroup>
                                     <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -3687,9 +3687,6 @@ Content="M 0 0 L 4 4 L 0 8 Z"/>
                                     <TranslateTransform X="0" Y="0"/>
                                 </TransformGroup>
                             </Border.LayoutTransform>
-                            <Border.BorderBrush>
-                                <SolidColorBrush Color="{StaticResource MainColor}"/>
-                            </Border.BorderBrush>
                         </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -4359,29 +4356,11 @@ Content="M 0 0 L 4 4 L 0 8 Z"/>
                             <RowDefinition Height="*" />
                             <RowDefinition Height="6" />
                         </Grid.RowDefinitions>
-                        <Border Grid.ColumnSpan="4" Grid.RowSpan="4" Background="{StaticResource LightBrush}" CornerRadius="4,4,4,4" BorderThickness="1,1,1,1" />
-                        <Border Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" BorderThickness="1,1,1,1" CornerRadius="4" BorderBrush="{StaticResource NormalBorderBrush}">
-                            <Border.OpacityMask>
-                                <MultiBinding Converter="{StaticResource BorderGapMaskConverter}" ConverterParameter="7">
-                                    <Binding Path="ActualWidth" ElementName="Header" />
-                                    <Binding Path="ActualWidth" RelativeSource="{RelativeSource Self}" />
-                                    <Binding Path="ActualHeight" RelativeSource="{RelativeSource Self}" />
-                                </MultiBinding>
-                            </Border.OpacityMask>
-                            <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="3">
-                                <Border.BorderBrush>
-                                    <SolidColorBrush Color="{StaticResource MainColor}" />
-                                </Border.BorderBrush>
-                                <Border BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="2">
-                                    <Border.BorderBrush>
-                                        <SolidColorBrush Color="{StaticResource MainColor}" />
-                                    </Border.BorderBrush>
-                                </Border>
-                            </Border>
-                        </Border>
-                        <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="4" />
-                        <Border Grid.ColumnSpan="4" Grid.RowSpan="2" Background="{StaticResource NormalBrush}" BorderThickness="1,1,1,0" CornerRadius="2,2,0,0" x:Name="Main" BorderBrush="{StaticResource NormalBorderBrush}" />
-                        <Rectangle Opacity="1" Stroke="{x:Null}" RadiusX="3" RadiusY="3" VerticalAlignment="Stretch" Height="Auto" x:Name="Shine" Grid.ColumnSpan="4" Grid.RowSpan="2" Margin="1,1,1,1">
+                        <Border Grid.ColumnSpan="4" Grid.RowSpan="4" Background="{StaticResource LightBrush}" BorderThickness="1" />
+                        <Border Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" BorderThickness="1" BorderBrush="{StaticResource NormalBorderBrush}" />
+                        <Border Grid.Column="0" Grid.ColumnSpan="4" Grid.Row="1" Grid.RowSpan="3" Background="{TemplateBinding Background}" BorderBrush="Transparent" BorderThickness="{TemplateBinding BorderThickness}" />
+                        <Border Grid.ColumnSpan="4" Grid.RowSpan="2" Background="{StaticResource NormalBrush}" BorderThickness="1,1,1,0" x:Name="Main" BorderBrush="{StaticResource NormalBorderBrush}" />
+                        <Rectangle Opacity="1" Stroke="{x:Null}" VerticalAlignment="Stretch" Height="Auto" x:Name="Shine" Grid.ColumnSpan="4" Grid.RowSpan="2" Margin="1">
                             <Rectangle.Fill>
                                 <LinearGradientBrush EndPoint="0.5,0.971" StartPoint="0.5,0.042">
                                     <GradientStop Color="#26FFFFFF" Offset="0" />

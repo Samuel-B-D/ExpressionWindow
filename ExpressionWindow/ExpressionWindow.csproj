@@ -53,7 +53,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColorButton.cs" />
+    <Compile Include="Controls\ColorButton.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="DesignTimeResourceDictionary.cs" />
     <Compile Include="ExpressionDialog.cs" />

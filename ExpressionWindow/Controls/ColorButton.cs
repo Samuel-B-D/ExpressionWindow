@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace ThemedWindows
+namespace ThemedWindows.Controls
 {
     public class ColorButton : Button
     {

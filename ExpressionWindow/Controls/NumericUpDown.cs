@@ -38,7 +38,12 @@ namespace ThemedWindows.Controls
                 txt.MouseLeftButtonUp += (o, e) => { txt.SelectAll(); };
                 txt.TextChanged += (o, e) =>
                 {
-                    txt.GetBindingExpression(TextBox.TextProperty).UpdateSource();
+                    if (txt != null)
+                    {
+                        var binding = txt.GetBindingExpression(TextBox.TextProperty);
+                        if (binding != null)
+                            binding.UpdateSource();
+                    }
                 };
                 Up.GotFocus += (o, e) => { Border.Focus(); };
                 Down.GotFocus += (o, e) => { Border.Focus(); };

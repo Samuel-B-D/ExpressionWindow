@@ -13,7 +13,7 @@
                 <MenuItem Header="MenuItem 4" />
             </MenuItem>
         </Menu>
-        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="377,395,151,74" />
+        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="362,358,166,111" />
         <Button Content="Button" HorizontalAlignment="Left" Margin="12,39,0,0" x:Name="button1" VerticalAlignment="Top" Click="button1_Click" />
         <ListBox Height="100" HorizontalAlignment="Left" Margin="12,68,0,0" x:Name="listBox1" VerticalAlignment="Top" Width="120">
             <ListBoxItem Content="stuff" />
@@ -56,7 +56,8 @@
         <Calendar Height="170" HorizontalAlignment="Left" Margin="432,145,0,0" x:Name="calendar1" VerticalAlignment="Top" Width="180" />
         <ProgressBar Height="24" HorizontalAlignment="Left" Margin="172,195,0,0" x:Name="progressBar1" VerticalAlignment="Top" Width="174" Value="50" />
         <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="55,310,0,0" VerticalAlignment="Top" Width="256"/>
-        <EW:ColorButton Content="Color" BackgroundColor="Green" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top"/>
-        <Controls:NumericUpDown HorizontalAlignment="Left" Margin="377,344,0,0" VerticalAlignment="Top" Width="207" Minimum="0" Maximum="10" Height="23" />
+        <Controls:ColorButton Content="Color" BackgroundColor="Green" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top"/>
+        <Controls:NumericUpDown HorizontalAlignment="Left" Margin="362,320,0,0" VerticalAlignment="Top" Width="207" Minimum="0" Maximum="10" Height="23" />
+        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="362,390,0,0" VerticalAlignment="Top" Height="82" Width="250"/>
     </Grid>
 </EW:ExpressionWindow>
