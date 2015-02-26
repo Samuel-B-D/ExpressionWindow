@@ -53,9 +53,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Effects\BCSEffect.cs" />
     <Compile Include="Controls\ColorButton.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="DesignTimeResourceDictionary.cs" />
+    <Compile Include="Effects\ShaderHelper.cs" />
     <Compile Include="ExpressionDialog.cs" />
     <Compile Include="ExpressionMessageBox.cs" />
     <Compile Include="Utilities.cs" />
@@ -69,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Resource Include="Effects\BCSEffect.ps" />
     <None Include="Themes\Sources\Colors\Blue.xaml">
       <SubType>Designer</SubType>
     </None>
@@ -150,10 +153,18 @@
     <Resource Include="Icons\Question_White.png" />
     <Resource Include="Icons\Question_Yellow.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Effects\BCSEffect.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fxc.exe" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)SimpleResourceDictionaryMerger\bin\$(ConfigurationName)\SimpleResourceDictionaryMerger.exe"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)SimpleResourceDictionaryMerger\bin\$(ConfigurationName)\SimpleResourceDictionaryMerger.exe"
+
+cd $(ProjectDir)BitmapEffects
+"$(ProjectDir)fxc.exe" /T ps_2_0 /E main /Fo "$(ProjectDir)Effects\BCSEffect.ps" "$(ProjectDir)Effects\BCSEffect.fx"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

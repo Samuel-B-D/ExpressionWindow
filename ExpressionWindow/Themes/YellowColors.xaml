@@ -1617,7 +1617,7 @@
               CornerRadius="1"
               BorderThickness="1"
               Padding="1"
-              BorderBrush="{StaticResource NormalBrush}"
+              BorderBrush="{StaticResource NormalBorderBrush}"
               Background="{StaticResource MainDarkBrush}" />
             <Border
               x:Name="PART_Indicator"
@@ -9047,17 +9047,20 @@
   <Style
     TargetType="{x:Type ListView}">
     <Setter
+      Property="SnapsToDevicePixels"
+      Value="True" />
+    <Setter
       Property="Background"
-      Value="{StaticResource {x:Static SystemColors.WindowBrushKey}}" />
+      Value="{StaticResource ControlBackgroundBrush}" />
     <Setter
       Property="BorderBrush"
-      Value="{StaticResource ListBorder}" />
+      Value="{StaticResource NormalBorderBrush}" />
     <Setter
       Property="BorderThickness"
       Value="1" />
     <Setter
       Property="Foreground"
-      Value="#FF042271" />
+      Value="{StaticResource TextBrush}" />
     <Setter
       Property="ScrollViewer.HorizontalScrollBarVisibility"
       Value="Auto" />
@@ -9068,9 +9071,6 @@
       Property="ScrollViewer.CanContentScroll"
       Value="true" />
     <Setter
-      Property="VerticalContentAlignment"
-      Value="Center" />
-    <Setter
       Property="Template">
       <Setter.Value>
         <ControlTemplate
@@ -9079,32 +9079,14 @@
             x:Name="Bd"
             BorderThickness="{TemplateBinding BorderThickness}"
             CornerRadius="0,0,0,0"
-            BorderBrush="{StaticResource DefaultedBorderBrush}"
-            Background="{StaticResource ControlBackgroundBrush}">
+            BorderBrush="{TemplateBinding BorderBrush}"
+            Background="{TemplateBinding Background}">
             <ScrollViewer
-              Padding="{TemplateBinding Padding}"
-              Style="{StaticResource {x:Static GridView.GridViewScrollViewerStyleKey}}">
+              Padding="{TemplateBinding Padding}">
               <ItemsPresenter
                 SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </ScrollViewer>
           </Border>
-          <ControlTemplate.Triggers>
-            <Trigger
-              Property="IsGrouping"
-              Value="true">
-              <Setter
-                Property="ScrollViewer.CanContentScroll"
-                Value="false" />
-            </Trigger>
-            <Trigger
-              Property="IsEnabled"
-              Value="false">
-              <Setter
-                Property="Background"
-                TargetName="Bd"
-                Value="{StaticResource {x:Static SystemColors.ControlBrushKey}}" />
-            </Trigger>
-          </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -9126,6 +9108,9 @@
   </Style>
   <Style
     TargetType="{x:Type ListViewItem}">
+    <Setter
+      Property="SnapsToDevicePixels"
+      Value="True" />
     <Setter
       Property="Foreground"
       Value="{StaticResource TextBrush}" />
@@ -9227,10 +9212,10 @@
             SnapsToDevicePixels="true"
             BorderBrush="{TemplateBinding BorderBrush}"
             BorderThickness="{TemplateBinding BorderThickness}"
+            Background="Transparent"
             CornerRadius="2"
             x:Name="border">
-            <Grid
-              Margin="2,0,2,0">
+            <Grid>
               <Rectangle
                 x:Name="Background"
                 IsHitTestVisible="False"
@@ -9252,10 +9237,10 @@
                 Fill="{StaticResource SelectedBackgroundBrush}"
                 RadiusX="1"
                 RadiusY="1" />
-              <GridViewRowPresenter
-                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                Margin="0,2,0,2"
-                VerticalAlignment="Stretch" />
+              <ContentPresenter
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                Margin="5,2" />
             </Grid>
           </Border>
           <ControlTemplate.Triggers>

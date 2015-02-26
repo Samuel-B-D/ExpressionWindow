@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using ThemedWindows;
+using ThemedWindows.Effects;
 
 namespace TEST
 {
@@ -32,6 +33,7 @@ namespace TEST
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
+            button1.Effect = new BCSEffect() { Brightness = -0.1 };
             ExpressionMessageBox.Show("Hello");
         }
     }

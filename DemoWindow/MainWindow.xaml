@@ -53,11 +53,14 @@
         <ScrollViewer Margin="541,56,66,372" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" />
         <ScrollBar Margin="12,433,332,43" Orientation="Horizontal" RenderTransformOrigin="0.438,2.412" />
         <ScrollBar Margin="657,56,4,43" />
-        <Calendar Height="170" HorizontalAlignment="Left" Margin="432,145,0,0" x:Name="calendar1" VerticalAlignment="Top" Width="180" />
+        <Calendar Height="170" HorizontalAlignment="Left" Margin="470,145,0,0" x:Name="calendar1" VerticalAlignment="Top" Width="180" />
         <ProgressBar Height="24" HorizontalAlignment="Left" Margin="172,195,0,0" x:Name="progressBar1" VerticalAlignment="Top" Width="174" Value="50" />
         <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="55,310,0,0" VerticalAlignment="Top" Width="256"/>
         <Controls:ColorButton Content="Color" BackgroundColor="Green" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top"/>
         <Controls:NumericUpDown HorizontalAlignment="Left" Margin="362,320,0,0" VerticalAlignment="Top" Width="207" Minimum="0" Maximum="10" Height="23" />
         <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="362,390,0,0" VerticalAlignment="Top" Height="82" Width="250"/>
+        <ListView HorizontalAlignment="Left" Height="106" Margin="351,145,0,0" VerticalAlignment="Top" Width="108">
+            <ListViewItem Content="test" />
+        </ListView>
     </Grid>
 </EW:ExpressionWindow>
