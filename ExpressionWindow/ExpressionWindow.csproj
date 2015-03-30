@@ -53,6 +53,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\MonoPictureButton.cs" />
+    <Compile Include="Effects\ColorizeEffect.cs" />
+    <Compile Include="Effects\ColorizeBCSEffect.cs" />
     <Compile Include="Effects\BCSEffect.cs" />
     <Compile Include="Controls\ColorButton.cs" />
     <Compile Include="Controls\NumericUpDown.cs" />
@@ -63,15 +66,9 @@
     <Compile Include="Utilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExpressionWindow.cs" />
-    <Page Include="Themes\BlueColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\GreenColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Resource Include="Effects\BCSEffect.ps" />
+    <Resource Include="Effects\ColorizeBCSEffect.ps" />
+    <Resource Include="Effects\ColorizeEffect.ps" />
     <None Include="Themes\Sources\Colors\Blue.xaml">
       <SubType>Designer</SubType>
     </None>
@@ -96,30 +93,6 @@
     <None Include="Themes\Sources\Colors\Yellow.xaml">
       <SubType>Designer</SubType>
     </None>
-    <Page Include="Themes\YellowColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\RedColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\PurpleColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\PinkColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\OrangeColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\GreyColors.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <None Include="Themes\Sources\ExpressionDarkBase.xaml">
@@ -157,14 +130,44 @@
     <None Include="Effects\BCSEffect.fx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Effects\ColorizeBCSEffect.fx" />
+    <None Include="Effects\ColorizeEffect.fx" />
     <Content Include="fxc.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Themes\BlueColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\GreenColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\GreyColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\OrangeColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\PinkColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\PurpleColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\RedColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
+    <Resource Include="Themes\YellowColors.xaml">
+      <SubType>Designer</SubType>
+    </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)SimpleResourceDictionaryMerger\bin\$(ConfigurationName)\SimpleResourceDictionaryMerger.exe"
 
 cd $(ProjectDir)BitmapEffects
-"$(ProjectDir)fxc.exe" /T ps_2_0 /E main /Fo "$(ProjectDir)Effects\BCSEffect.ps" "$(ProjectDir)Effects\BCSEffect.fx"</PreBuildEvent>
+"$(ProjectDir)fxc.exe" /T ps_2_0 /E main /Fo "$(ProjectDir)Effects\BCSEffect.ps" "$(ProjectDir)Effects\BCSEffect.fx"
+"$(ProjectDir)fxc.exe" /T ps_2_0 /E main /Fo "$(ProjectDir)Effects\ColorizeBCSEffect.ps" "$(ProjectDir)Effects\ColorizeBCSEffect.fx"
+"$(ProjectDir)fxc.exe" /T ps_2_0 /E main /Fo "$(ProjectDir)Effects\ColorizeEffect.ps" "$(ProjectDir)Effects\ColorizeEffect.fx"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -39,6 +39,26 @@ namespace ThemedWindows
 
         WindowChrome Chrome;
 
+        static ResourceDictionary CurrentTheme = new ResourceDictionary();
+
+        static ExpressionWindow()
+        {
+            if (Application.Current.Resources is DesignTimeResourceDictionary)
+            {
+                Application.Current.Resources = null;
+            }
+            else
+            {
+                foreach (var dic in Application.Current.Resources.MergedDictionaries)
+                    if (dic is DesignTimeResourceDictionary)
+                    {
+                        Application.Current.Resources.MergedDictionaries.Remove(dic);
+                        break;
+                    }
+            }
+            Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
+        }
+
         ThemeColors themeColor;
         public ThemeColors ThemeColor
         {
@@ -48,12 +68,17 @@ namespace ThemedWindows
                 themeColor = value;
 
                 //Application.Current.Resources.MergedDictionaries.Clear();
-                Application.Current.Resources.Clear();
+                //Application.Current.Resources.Clear();
+
+                //if (CurrentTheme != null)
+                //{
+                //    Application.Current.Resources.MergedDictionaries.Remove(CurrentTheme);
+                //}
 
                 string ColorS = Enum.GetName(typeof(ThemeColors), value);
-                ResourceDictionary CurrentTheme = new ResourceDictionary();
+                //CurrentTheme = new ResourceDictionary();
                 CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
-                Application.Current.Resources = CurrentTheme;
+                //Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
 
                 RefreshStaticColors();
 

@@ -45,16 +45,15 @@ namespace ThemedWindows.Controls
         }
         private static SolidColorBrush BrushFromColorBrightnessContrast(SolidColorBrush color, int Brightness, int Contrast)
         {
-            return BrushFromColorBrightnessContrast(color.Color, Brightness, Contrast);
+            return color == null ? null : BrushFromColorBrightnessContrast(color.Color, Brightness, Contrast);
         }
 
-        public new Brush Background { get; set; }
-        public new Brush BorderBrush { get; set; }
+        private new Brush Background { get; set; }
+        private new Brush BorderBrush { get; set; }
         public SolidColorBrush BackgroundColor 
         {
             get { return (SolidColorBrush)this.GetValue(BackgroundColorProperty); }
             set { this.SetValue(BackgroundColorProperty, value); }
-
         }
         public static readonly DependencyProperty BackgroundColorProperty =
             DependencyProperty.Register("BackgroundColor", typeof(SolidColorBrush), typeof(ColorButton), new PropertyMetadata(OnBackgroundColorChanged));

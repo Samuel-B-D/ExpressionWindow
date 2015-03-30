@@ -3,6 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-        <EW:DesignTimeResourceDictionary xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" DesignTimeColor="Green"/>
+        <EW:DesignTimeResourceDictionary xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" DesignTimeColor="Grey" />
     </Application.Resources>
 </Application>

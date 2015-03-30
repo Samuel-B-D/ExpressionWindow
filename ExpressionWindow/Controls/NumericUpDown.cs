@@ -18,6 +18,10 @@ namespace ThemedWindows.Controls
 {
     public class NumericUpDown : Control
     {
+        const double DOUBLE_ZERO_OFFSET = 0.0001;
+
+        public event EventHandler ValueChanged;
+
         static NumericUpDown()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown)));
@@ -44,6 +48,7 @@ namespace ThemedWindows.Controls
                         if (binding != null)
                             binding.UpdateSource();
                     }
+                    RaiseValueChanged();
                 };
                 Up.GotFocus += (o, e) => { Border.Focus(); };
                 Down.GotFocus += (o, e) => { Border.Focus(); };
@@ -61,14 +66,10 @@ namespace ThemedWindows.Controls
             DependencyProperty.Register("Minimum", typeof(double), typeof(NumericUpDown),
             new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
-
-            }
-            , (d, v) =>
-            {
-                var Min = (double)v;
+                var Min = (double)e.NewValue;
                 var NUD = d as NumericUpDown;
                 if (Min > NUD.Maximum) Min = NUD.Maximum;
-                return Min;
+                d.SetCurrentValue(MinimumProperty, Min);
             }
             ));
 
@@ -83,13 +84,10 @@ namespace ThemedWindows.Controls
             DependencyProperty.Register("Maximum", typeof(double), typeof(NumericUpDown),
             new FrameworkPropertyMetadata(double.MaxValue, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
-
-            }, (d, v) =>
-            {
-                var Max = (double)v;
+                var Max = (double)e.NewValue;
                 var NUD = d as NumericUpDown;
                 if (Max < NUD.Minimum) Max = NUD.Minimum;
-                return Max;
+                d.SetCurrentValue(MaximumProperty, Max);
             }
             ));
 
@@ -104,15 +102,13 @@ namespace ThemedWindows.Controls
             DependencyProperty.Register("Value", typeof(double), typeof(NumericUpDown),
             new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
-
-            }
-            , (d, v) =>
-            {
-                var Value = (double)v;
+                var Value = (double)e.NewValue;
                 var NUD = d as NumericUpDown;
                 if (Value < NUD.Minimum) Value = NUD.Minimum;
                 if (Value > NUD.Maximum) Value = NUD.Maximum;
-                return Value;
+                d.SetCurrentValue(ValueProperty, Value);
+                d.SetCurrentValue(DisplayValueProperty, Value.ToString());
+                NUD.RaiseValueChanged();
             }
             ));
 
@@ -125,7 +121,7 @@ namespace ThemedWindows.Controls
 
         public static readonly DependencyProperty SmallChangeProperty =
             DependencyProperty.Register("SmallChange", typeof(double), typeof(NumericUpDown),
-            new FrameworkPropertyMetadata(1d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
+            new FrameworkPropertyMetadata(1d, FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
             {
 
             }
@@ -140,11 +136,56 @@ namespace ThemedWindows.Controls
 
         public static readonly DependencyProperty ChangeIntervalProperty =
             DependencyProperty.Register("ChangeInterval", typeof(int), typeof(NumericUpDown),
-            new FrameworkPropertyMetadata(17, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault | FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
-            {
-            }
-            ));
+            new FrameworkPropertyMetadata(17, FrameworkPropertyMetadataOptions.AffectsRender)
+            );
 
+        [BindableAttribute(true)]
+        public string NeutralCaption
+        {
+            get { return (string)GetValue(NeutralCaptionProperty); }
+            set { SetCurrentValue(NeutralCaptionProperty, value); }
+        }
+
+        public static readonly DependencyProperty NeutralCaptionProperty =
+            DependencyProperty.Register("NeutralCaption", typeof(string), typeof(NumericUpDown), 
+            new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
+            {
+                var NUD = d as NumericUpDown;
+                string NewCaption = (string)e.NewValue;
+                if (NewCaption.Length > 0 && IsZero(NUD.Value))
+                    d.SetCurrentValue(DisplayValueProperty, NewCaption);
+            })
+            );
+
+        [BindableAttribute(true)]
+        private string DisplayValue
+        {
+            get { return (string)GetValue(DisplayValueProperty); }
+            set { SetCurrentValue(DisplayValueProperty, value); }
+        }
+
+        private static readonly DependencyProperty DisplayValueProperty =
+            DependencyProperty.Register("DisplayValue", typeof(string), typeof(NumericUpDown),
+            new FrameworkPropertyMetadata("0", FrameworkPropertyMetadataOptions.AffectsRender, (d, e) =>
+            {
+                var NUD = d as NumericUpDown;
+                string ValueStr = (string)e.NewValue;
+                double Value;
+                if (!double.TryParse(ValueStr, out Value))
+                    if (NUD.NeutralCaption.Length > 0 && ValueStr == NUD.NeutralCaption)
+                        Value = 0;
+                    else
+                    {
+                        Value = double.Parse((string)e.OldValue);
+                        ValueStr = Value.ToString();
+                    }
+                else
+                    if (IsZero(Value) && NUD.NeutralCaption.Length > 0)
+                        ValueStr = NUD.NeutralCaption;
+                d.SetCurrentValue(DisplayValueProperty, ValueStr);
+                d.SetCurrentValue(ValueProperty, Value);
+            })
+            );
 
 
         public ICommand Decrease
@@ -167,6 +208,18 @@ namespace ThemedWindows.Controls
                     Value += SmallChange;
                 });
             }
+        }
+
+
+        private void RaiseValueChanged()
+        {
+            if (ValueChanged != null)
+                ValueChanged(this, EventArgs.Empty);
+        }
+
+        private static bool IsZero(double value)
+        {
+            return value + DOUBLE_ZERO_OFFSET > 0 && value - DOUBLE_ZERO_OFFSET < 0;
         }
     }
 }
