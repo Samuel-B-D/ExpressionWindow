@@ -12,8 +12,16 @@ namespace SimpleResourceDictionaryMerger
     {
         static void Main(string[] args)
         {
-            foreach (string file in Directory.EnumerateFiles(@"..\..\..\ExpressionWindow\Themes\Sources\Colors"))
+            string SolutionDir = args[0].Replace("\"", "");
+            string ThemeColors = Path.Combine(SolutionDir, @"ExpressionWindow\Themes\Sources\Colors");
+            string ThemeOutput = Path.Combine(SolutionDir, @"ExpressionWindow\Themes");
+            Console.WriteLine("Solution dir : {0}", SolutionDir);
+            Console.WriteLine("Theme colors path : {0}", ThemeColors);
+            Console.WriteLine("Theme output path : {0}", ThemeOutput);
+            foreach (string file in Directory.EnumerateFiles(ThemeColors))
             {
+                Console.WriteLine();
+                Console.WriteLine(".. Processing : {0}", file);
                 string FileName = Path.GetFileNameWithoutExtension(file);
                 XmlDocument Doc = new XmlDocument();
                 XmlElement Root = Doc.CreateElement("ResourceDictionary", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
@@ -24,8 +32,9 @@ namespace SimpleResourceDictionaryMerger
                 Root.SetAttribute("xmlns:Controls", "clr-namespace:ThemedWindows.Controls;assembly=ExpressionWindow");
                 Root.SetAttribute("xmlns:Effects", "clr-namespace:ThemedWindows.Effects;assembly=ExpressionWindow");
 
+                Console.WriteLine(".. Loading base XAML");
                 XmlDocument baseTheme = new XmlDocument();
-                baseTheme.Load(@"..\..\..\ExpressionWindow\Themes\Sources\ExpressionDarkBase.xaml");
+                baseTheme.Load(Path.Combine(SolutionDir, @"ExpressionWindow\Themes\Sources\ExpressionDarkBase.xaml"));
                 
                 //Import topmost comment if there is one
                 if (baseTheme.FirstChild.NodeType == XmlNodeType.Comment)
@@ -53,8 +62,14 @@ namespace SimpleResourceDictionaryMerger
                 }
 
                 Doc.AppendChild(Root);
-                Doc.Save(XmlWriter.Create(@"..\..\..\ExpressionWindow\Themes\" + FileName+ "Colors.xaml", new XmlWriterSettings() { ConformanceLevel = ConformanceLevel.Auto, OmitXmlDeclaration = true, NewLineHandling = NewLineHandling.Entitize, NewLineOnAttributes = true, Indent = true }));
+
+                Console.WriteLine(".. Creating output : {0}", ThemeOutput + "\\" + FileName+ "Colors.xaml");
+
+                Doc.Save(XmlWriter.Create(ThemeOutput + "\\" + FileName+ "Colors.xaml", new XmlWriterSettings() { ConformanceLevel = ConformanceLevel.Auto, OmitXmlDeclaration = true, NewLineHandling = NewLineHandling.Entitize, NewLineOnAttributes = true, Indent = true }));
             }
+            Console.WriteLine();
+            Console.WriteLine("DONE!");
+            Console.WriteLine();
         }
     }
 }

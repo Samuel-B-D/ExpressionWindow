@@ -3,14 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionWindow", "ExpressionWindow\ExpressionWindow.csproj", "{12AC5E51-4F44-4E49-BDE6-3126FA24D010}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionWindow", "ExpressionWindow\ExpressionWindow.csproj", "{9F3292C6-ED2C-4D41-88D7-CEAB4CA8413C}"
 	ProjectSection(ProjectDependencies) = postProject
-		{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D} = {ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}
+		{6E890982-6757-4353-BC34-5B342D8F1D0B} = {6E890982-6757-4353-BC34-5B342D8F1D0B}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoWindow", "DemoWindow\DemoWindow.csproj", "{D0222FAD-13B4-4E6D-BCA8-85A2E1B1B90B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XAMLMerger", "XAMLMerger\XAMLMerger.csproj", "{6E890982-6757-4353-BC34-5B342D8F1D0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XAMLBuilder", "SimpleResourceDictionaryMerger\XAMLBuilder.csproj", "{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoWindow", "DemoWindow\DemoWindow.csproj", "{71CB3CD6-E33D-4B37-ADB3-EF2DAF59C261}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,18 +18,18 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{12AC5E51-4F44-4E49-BDE6-3126FA24D010}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{12AC5E51-4F44-4E49-BDE6-3126FA24D010}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{12AC5E51-4F44-4E49-BDE6-3126FA24D010}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{12AC5E51-4F44-4E49-BDE6-3126FA24D010}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0222FAD-13B4-4E6D-BCA8-85A2E1B1B90B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0222FAD-13B4-4E6D-BCA8-85A2E1B1B90B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0222FAD-13B4-4E6D-BCA8-85A2E1B1B90B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0222FAD-13B4-4E6D-BCA8-85A2E1B1B90B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ED964F5D-520D-4863-AC0B-8FBF75CD2F7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F3292C6-ED2C-4D41-88D7-CEAB4CA8413C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F3292C6-ED2C-4D41-88D7-CEAB4CA8413C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F3292C6-ED2C-4D41-88D7-CEAB4CA8413C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F3292C6-ED2C-4D41-88D7-CEAB4CA8413C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E890982-6757-4353-BC34-5B342D8F1D0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E890982-6757-4353-BC34-5B342D8F1D0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E890982-6757-4353-BC34-5B342D8F1D0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E890982-6757-4353-BC34-5B342D8F1D0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71CB3CD6-E33D-4B37-ADB3-EF2DAF59C261}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71CB3CD6-E33D-4B37-ADB3-EF2DAF59C261}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71CB3CD6-E33D-4B37-ADB3-EF2DAF59C261}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71CB3CD6-E33D-4B37-ADB3-EF2DAF59C261}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

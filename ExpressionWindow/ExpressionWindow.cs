@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Microsoft.Windows.Shell;
+using System.Reflection;
 
 namespace ThemedWindows
 {
@@ -80,7 +81,7 @@ namespace ThemedWindows
                 CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
                 //Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
 
-                RefreshStaticColors();
+                //RefreshStaticColors();
 
                 Window_Button_Close.Style = (Style)this.FindResource("Window_Button_Close");
                 Window_Button_Maximize.Style = (Style)this.FindResource("Window_Button_Maximize");
@@ -186,8 +187,14 @@ namespace ThemedWindows
             TitleIcon.Height = 16;
             TitleIcon.Margin = new Thickness(8, 0, 0, 0);
 
-            Icon = Icons.IconFromExtensionShell(".exe",Icons.SystemIconSize.Small);
-            TitleIcon.Source = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
+            this.Icon = Imaging.CreateBitmapSourceFromHIcon(
+                    System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location).Handle,
+                    Int32Rect.Empty,
+                    BitmapSizeOptions.FromEmptyOptions()
+                    );
+            TitleIcon.Source = this.Icon;
+            //Icon = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
+            //TitleIcon.Source = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
 
             TitleIcon.SetBinding(Image.SourceProperty, new Binding() { Path = new PropertyPath("Icon"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
 
@@ -231,17 +238,17 @@ namespace ThemedWindows
                 w.IsForeground = false;
         }
 
-        void RefreshStaticColors()
-        {
-            if (Window_TitleGrid != null && Window_TitleGrid.Background != null)
-            {
-                TitleEnabledBackground = Window_TitleGrid.Background.CloneCurrentValue();
-                TitleDisabledBackground = TitleEnabledBackground.CloneCurrentValue();
-                TitleDisabledBackground.Opacity = 0.4;
-                TitleEnabledBackground.Freeze();
-                TitleDisabledBackground.Freeze();
-            }
-        }
+        //void RefreshStaticColors()
+        //{
+        //    if (Window_TitleGrid != null && Window_TitleGrid.Background != null)
+        //    {
+        //        TitleEnabledBackground = Window_TitleGrid.Background.CloneCurrentValue();
+        //        TitleDisabledBackground = TitleEnabledBackground.CloneCurrentValue();
+        //        TitleDisabledBackground.Opacity = 0.4;
+        //        TitleEnabledBackground.Freeze();
+        //        TitleDisabledBackground.Freeze();
+        //    }
+        //}
 
         public bool isForeground = true;
         public bool IsForeground
@@ -401,7 +408,11 @@ namespace ThemedWindows
             Window_TitleGrid.Style = (Style)this.FindResource("Window_Frame_Title_Bar");
             Window_Border.Style = (Style)this.FindResource("Window_Frame_Border");
 
-            RefreshStaticColors();
+            TitleEnabledBackground = Window_TitleGrid.Background.CloneCurrentValue();
+            TitleDisabledBackground = TitleEnabledBackground.CloneCurrentValue();
+            TitleDisabledBackground.Opacity = 0.4;
+            TitleEnabledBackground.Freeze();
+            TitleDisabledBackground.Freeze();
         }
 
         private void Window_Close(object sender, RoutedEventArgs e)
