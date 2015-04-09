@@ -188,17 +188,12 @@
     ===    CUSTOM CONTROLS HERE    ===
     ===____________________________-->
 
-    <Style x:Key="RepeatButtonUp" TargetType="{x:Type RepeatButton}" BasedOn="{x:Null}">
+    <Style x:Key="RepeatButtonUp" TargetType="{x:Type RepeatButton}">
         <Setter Property="Background" Value="{StaticResource NormalBrush}" />
         <Setter Property="Foreground" Value="{StaticResource TextBrush}" />
         <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Content">
-            <Setter.Value>
-                <Polygon HorizontalAlignment="Center" Points="0,7 5,0 10,7" Stretch="Uniform" Fill="White" VerticalAlignment="Center" Margin="3" MaxHeight="6" />
-            </Setter.Value>
-        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -246,7 +241,7 @@
                         <Border x:Name="HoverShineBorder" Opacity="0" Background="{StaticResource HoverShineBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,3,0,0" />
                         <Border x:Name="PressedBorder" Opacity="0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource PressedBrush}" CornerRadius="0,3,0,0" />
                         <Border x:Name="ShineBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource ShineBrush}" Opacity="1" CornerRadius="0,3,0,0" />
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
+                        <Polygon HorizontalAlignment="Center" Points="0,7 5,0 10,7" Stretch="Uniform" Fill="White" VerticalAlignment="Center" Margin="5,2" MaxHeight="8" />
                         <Border x:Name="FocusVisualElement" IsHitTestVisible="false" BorderBrush="{StaticResource HoverShineBrush}" BorderThickness="1" Margin="1,1,1,1" Opacity="0" CornerRadius="0,3,0,0" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -292,11 +287,6 @@
         <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
         <Setter Property="Focusable" Value="False" />
         <Setter Property="BorderThickness" Value="1" />
-        <Setter Property="Content">
-            <Setter.Value>
-                <Polygon HorizontalAlignment="Center" Points="0,0 5,7 10,0" Stretch="Uniform" Fill="White" VerticalAlignment="Center" Margin="3" MaxHeight="6" />
-            </Setter.Value>
-        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type RepeatButton}">
@@ -344,7 +334,7 @@
                         <Border x:Name="HoverShineBorder" Opacity="0" Background="{StaticResource HoverShineBrush}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="0,0,3,0" />
                         <Border x:Name="PressedBorder" Opacity="0" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource PressedBrush}" CornerRadius="0,0,3,0" />
                         <Border x:Name="ShineBorder" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{StaticResource ShineBrush}" Opacity="1" CornerRadius="0,0,3,0" />
-                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" RecognizesAccessKey="True" />
+                        <Polygon HorizontalAlignment="Center" Points="0,0 5,7 10,0" Stretch="Uniform" Fill="White" VerticalAlignment="Center" Margin="5,2" MaxHeight="8" />
                         <Border x:Name="FocusVisualElement" IsHitTestVisible="false" BorderBrush="{StaticResource HoverShineBrush}" BorderThickness="1" Margin="1,1,1,1" Opacity="0" CornerRadius="0,0,3,0" />
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -405,8 +395,8 @@
                                 <RowDefinition Height="1*" />
                             </Grid.RowDefinitions>
                             <TextBox x:Name="NUD_TextBox" Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DisplayValue, Mode=TwoWay, UpdateSourceTrigger=Explicit}" Grid.RowSpan="2" Padding="0,0,20,0" BorderBrush="Transparent" BorderThickness="0" Margin="0" HorizontalContentAlignment="Right" VerticalContentAlignment="Center" />
-                            <RepeatButton x:Name="NUD_Up" Interval="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ChangeInterval}" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Increase}" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="18" Margin="0,-1,-1,0" Focusable="True" Style="{StaticResource RepeatButtonUp}" />
-                            <RepeatButton x:Name="NUD_Down" Interval="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ChangeInterval}" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Decrease}" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="18" Margin="0,0,-1,-1" Focusable="True" Style="{StaticResource RepeatButtonDown}" />
+                            <RepeatButton x:Name="NUD_Up" Interval="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ChangeInterval}" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Increase}" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="18" Margin="0,-1,-1,0" Focusable="False" Style="{StaticResource RepeatButtonUp}" />
+                            <RepeatButton x:Name="NUD_Down" Interval="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ChangeInterval}" Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Decrease}" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Stretch" Width="18" Margin="0,0,-1,-1" Focusable="False" Style="{StaticResource RepeatButtonDown}" />
                         </Grid>
                     </Border>
                 </ControlTemplate>

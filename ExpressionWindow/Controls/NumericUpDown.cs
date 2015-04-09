@@ -37,9 +37,15 @@ namespace ThemedWindows.Controls
 
             if (txt != null && Up != null && Down != null && Border != null)
             {
-                txt.GotFocus += (o, e) => { txt.SelectAll(); };
-                txt.MouseLeftButtonDown += (o, e) => { txt.SelectAll(); };
-                txt.MouseLeftButtonUp += (o, e) => { txt.SelectAll(); };
+                txt.PreviewMouseLeftButtonDown += (o, e) =>
+                {
+                    TextBox tb = o as TextBox;
+                    if (tb != null)
+                        tb.SelectAll();
+
+                    e.Handled = true;
+                    tb.Focus();
+                };
                 txt.TextChanged += (o, e) =>
                 {
                     if (txt != null)
@@ -170,18 +176,25 @@ namespace ThemedWindows.Controls
             {
                 var NUD = d as NumericUpDown;
                 string ValueStr = (string)e.NewValue;
+                if (ValueStr[0] == '.')
+                    ValueStr = "0" + ValueStr;
                 double Value;
                 if (!double.TryParse(ValueStr, out Value))
                     if (NUD.NeutralCaption.Length > 0 && ValueStr == NUD.NeutralCaption)
                         Value = 0;
                     else
                     {
-                        Value = double.Parse((string)e.OldValue);
+                        if (!double.TryParse((string)e.OldValue, out Value))
+                            Value = 0;
                         ValueStr = Value.ToString();
                     }
                 else
                     if (IsZero(Value) && NUD.NeutralCaption.Length > 0)
                         ValueStr = NUD.NeutralCaption;
+
+                //double Value;
+                //double.TryParse(ValueStr, out Value);
+
                 d.SetCurrentValue(DisplayValueProperty, ValueStr);
                 d.SetCurrentValue(ValueProperty, Value);
             })

@@ -344,8 +344,7 @@
     ===____________________________-->
   <Style
     x:Key="RepeatButtonUp"
-    TargetType="{x:Type RepeatButton}"
-    BasedOn="{x:Null}">
+    TargetType="{x:Type RepeatButton}">
     <Setter
       Property="Background"
       Value="{StaticResource NormalBrush}" />
@@ -361,19 +360,6 @@
     <Setter
       Property="BorderThickness"
       Value="1" />
-    <Setter
-      Property="Content">
-      <Setter.Value>
-        <Polygon
-          HorizontalAlignment="Center"
-          Points="0,7 5,0 10,7"
-          Stretch="Uniform"
-          Fill="White"
-          VerticalAlignment="Center"
-          Margin="3"
-          MaxHeight="6" />
-      </Setter.Value>
-    </Setter>
     <Setter
       Property="Template">
       <Setter.Value>
@@ -499,11 +485,14 @@
               Background="{StaticResource ShineBrush}"
               Opacity="1"
               CornerRadius="0,3,0,0" />
-            <ContentPresenter
-              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-              Margin="{TemplateBinding Padding}"
-              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-              RecognizesAccessKey="True" />
+            <Polygon
+              HorizontalAlignment="Center"
+              Points="0,7 5,0 10,7"
+              Stretch="Uniform"
+              Fill="White"
+              VerticalAlignment="Center"
+              Margin="5,2"
+              MaxHeight="8" />
             <Border
               x:Name="FocusVisualElement"
               IsHitTestVisible="false"
@@ -597,19 +586,6 @@
       Property="BorderThickness"
       Value="1" />
     <Setter
-      Property="Content">
-      <Setter.Value>
-        <Polygon
-          HorizontalAlignment="Center"
-          Points="0,0 5,7 10,0"
-          Stretch="Uniform"
-          Fill="White"
-          VerticalAlignment="Center"
-          Margin="3"
-          MaxHeight="6" />
-      </Setter.Value>
-    </Setter>
-    <Setter
       Property="Template">
       <Setter.Value>
         <ControlTemplate
@@ -734,11 +710,14 @@
               Background="{StaticResource ShineBrush}"
               Opacity="1"
               CornerRadius="0,0,3,0" />
-            <ContentPresenter
-              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-              Margin="{TemplateBinding Padding}"
-              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-              RecognizesAccessKey="True" />
+            <Polygon
+              HorizontalAlignment="Center"
+              Points="0,0 5,7 10,0"
+              Stretch="Uniform"
+              Fill="White"
+              VerticalAlignment="Center"
+              Margin="5,2"
+              MaxHeight="8" />
             <Border
               x:Name="FocusVisualElement"
               IsHitTestVisible="false"
@@ -862,7 +841,7 @@
                 VerticalAlignment="Stretch"
                 Width="18"
                 Margin="0,-1,-1,0"
-                Focusable="True"
+                Focusable="False"
                 Style="{StaticResource RepeatButtonUp}" />
               <RepeatButton
                 x:Name="NUD_Down"
@@ -873,7 +852,7 @@
                 VerticalAlignment="Stretch"
                 Width="18"
                 Margin="0,0,-1,-1"
-                Focusable="True"
+                Focusable="False"
                 Style="{StaticResource RepeatButtonDown}" />
             </Grid>
           </Border>

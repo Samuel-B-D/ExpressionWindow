@@ -24,6 +24,7 @@ namespace ThemedWindows
         static bool FrameLoaded = false;
         const int TITLE_BAR_HEIGHT = 24;
         const int RESIZE_HANDLE_SIZE = 6;
+        const int CHROME_BUTTON_TOP_MARGIN = -1;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -31,8 +32,8 @@ namespace ThemedWindows
         public enum ThemeColors { Green, Blue, Yellow, Red, Orange, Purple, Pink, Grey }
         private const int X_BUTTON_NORMAL_WIDTH = 48;
         private const int X_BUTTON_MAXIMIZED_WIDTH = 53;
-        private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, -3, 5, 0);
-        private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, -3, 0, 0);
+        private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 5, 0);
+        private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 0, 0);
         private Rect _restoreLocation;
 
         Brush TitleEnabledBackground;
@@ -68,20 +69,9 @@ namespace ThemedWindows
             {
                 themeColor = value;
 
-                //Application.Current.Resources.MergedDictionaries.Clear();
-                //Application.Current.Resources.Clear();
-
-                //if (CurrentTheme != null)
-                //{
-                //    Application.Current.Resources.MergedDictionaries.Remove(CurrentTheme);
-                //}
-
                 string ColorS = Enum.GetName(typeof(ThemeColors), value);
-                //CurrentTheme = new ResourceDictionary();
-                CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
-                //Application.Current.Resources.MergedDictionaries.Add(CurrentTheme);
 
-                //RefreshStaticColors();
+                CurrentTheme.Source = new Uri("pack://application:,,,/ExpressionWindow;component/Themes/" + ColorS + "Colors.xaml");
 
                 Window_Button_Close.Style = (Style)this.FindResource("Window_Button_Close");
                 Window_Button_Maximize.Style = (Style)this.FindResource("Window_Button_Maximize");
@@ -133,6 +123,26 @@ namespace ThemedWindows
             }
         }
 
+        private bool isDarken = false;
+        public bool IsDarken
+        {
+            get { return isDarken; }
+            set
+            {
+                isDarken = value;
+                if (value)
+                {
+                    DarkenOverlay.Opacity = 0.5;
+                    DarkenOverlay.Visibility = System.Windows.Visibility.Visible;
+                }
+                else
+                {
+                    DarkenOverlay.Opacity = 0;
+                    DarkenOverlay.Visibility = System.Windows.Visibility.Collapsed;
+                }
+            }
+        }
+
         //Expose some of the maintly utilised brushes
         static public Brush MainColorBrush
         {
@@ -176,6 +186,8 @@ namespace ThemedWindows
 
         ContextMenu ColorPicker = new ContextMenu();
 
+        Border DarkenOverlay = new Border();
+
         #endregion
 
         public ExpressionWindow()
@@ -193,8 +205,6 @@ namespace ThemedWindows
                     BitmapSizeOptions.FromEmptyOptions()
                     );
             TitleIcon.Source = this.Icon;
-            //Icon = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
-            //TitleIcon.Source = Icons.IconFromExtensionShell(".exe", Icons.SystemIconSize.Small);
 
             TitleIcon.SetBinding(Image.SourceProperty, new Binding() { Path = new PropertyPath("Icon"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
 
@@ -203,8 +213,7 @@ namespace ThemedWindows
             IsColorPickerEnabled = true;
             IsModal = false;
             Window_TitleLabel.SetBinding(Label.ContentProperty, new Binding() { Path = new PropertyPath("Title"), RelativeSource = new RelativeSource() { AncestorType = typeof(ExpressionWindow), Mode = RelativeSourceMode.FindAncestor }, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
-            //this.Activated += ExpressionWindow_Activated;
-            //this.Deactivated += ExpressionWindow_Deactivated;
+
             if (FrameLoaded)
                 themeColor = ((ExpressionWindow)Application.Current.MainWindow).ThemeColor;
             else
@@ -237,18 +246,6 @@ namespace ThemedWindows
             foreach (ExpressionWindow w in Application.Current.Windows.OfType<ExpressionWindow>())
                 w.IsForeground = false;
         }
-
-        //void RefreshStaticColors()
-        //{
-        //    if (Window_TitleGrid != null && Window_TitleGrid.Background != null)
-        //    {
-        //        TitleEnabledBackground = Window_TitleGrid.Background.CloneCurrentValue();
-        //        TitleDisabledBackground = TitleEnabledBackground.CloneCurrentValue();
-        //        TitleDisabledBackground.Opacity = 0.4;
-        //        TitleEnabledBackground.Freeze();
-        //        TitleDisabledBackground.Freeze();
-        //    }
-        //}
 
         public bool isForeground = true;
         public bool IsForeground
@@ -308,14 +305,23 @@ namespace ThemedWindows
 
             Window_Border.BorderThickness = new Thickness(1);
             Window_Border.Background = new SolidColorBrush(Color.FromRgb(56, 56, 56));
+            Window_Border.ClipToBounds = true;
             Window_Border.Child = Window_Grid;
+
+            DarkenOverlay.Background = Brushes.Black;
+            DarkenOverlay.Opacity = 0;
+            DarkenOverlay.Visibility = System.Windows.Visibility.Collapsed;
+            DarkenOverlay.BorderThickness = new Thickness(0);
+            DarkenOverlay.IsHitTestVisible = false;
 
             Window_Grid.Children.Add(Window_TitleGrid);
             Window_Content_Grid.Children.Add(ContentPlaceHolder);
             Window_Grid.Children.Add(Window_Content_Grid);
+            Window_Grid.Children.Add(DarkenOverlay);
 
             #region TITLE_BAR
 
+            Window_TitleGrid.ClipToBounds = true;
             Window_TitleGrid.Height = TITLE_BAR_HEIGHT;
             Window_TitleGrid.VerticalAlignment = System.Windows.VerticalAlignment.Top;
             Window_TitleGrid.HorizontalAlignment = System.Windows.HorizontalAlignment.Stretch;
@@ -338,15 +344,15 @@ namespace ThemedWindows
             Window_Button_Close.Content = 'r';
             Window_Button_Close.FontFamily = new System.Windows.Media.FontFamily("Webdings");
             Window_Button_Close.FontSize = 11;
-            Window_Button_Close.Height = 20;
+            Window_Button_Close.Height = 19;
             Window_Button_Close.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_Button_Close.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_Button_Close.Padding = new Thickness(0, 3, 0, 0);
+            Window_Button_Close.Padding = new Thickness(0, -CHROME_BUTTON_TOP_MARGIN - 1, 0, 0);
             Window_Button_Close.Foreground = Brushes.Black;
             Window_Button_Close.BorderThickness = new Thickness(1);
             Window_Button_Close.FontWeight = FontWeights.Bold;
             Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
-            Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
+            Window_Button_Close.Margin = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 5, 0);
             Window_Button_Close.Focusable = false;
             WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Close, true);
 
@@ -356,15 +362,15 @@ namespace ThemedWindows
             Window_Button_Maximize.Content = '1';
             Window_Button_Maximize.FontFamily = new System.Windows.Media.FontFamily("Webdings");
             Window_Button_Maximize.FontSize = 11;
-            Window_Button_Maximize.Height = 20;
+            Window_Button_Maximize.Height = 19;
             Window_Button_Maximize.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_Button_Maximize.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_Button_Maximize.Padding = new Thickness(0, 3, 0, 0);
+            Window_Button_Maximize.Padding = new Thickness(0, -CHROME_BUTTON_TOP_MARGIN - 1, 0, 0);
             Window_Button_Maximize.Foreground = Brushes.Black;
             Window_Button_Maximize.BorderThickness = new Thickness(1);
             Window_Button_Maximize.FontWeight = FontWeights.Bold;
             Window_Button_Maximize.Width = 30;
-            Window_Button_Maximize.Margin = new Thickness(0, -3, 52, 0);
+            Window_Button_Maximize.Margin = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 52, 0);
             Window_Button_Maximize.Focusable = false;
             WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Maximize, true);
 
@@ -374,15 +380,15 @@ namespace ThemedWindows
             Window_Button_Minimize.Content = '0';
             Window_Button_Minimize.FontFamily = new System.Windows.Media.FontFamily("Webdings");
             Window_Button_Minimize.FontSize = 11;
-            Window_Button_Minimize.Height = 20;
+            Window_Button_Minimize.Height = 19;
             Window_Button_Minimize.HorizontalAlignment = System.Windows.HorizontalAlignment.Right;
             Window_Button_Minimize.VerticalAlignment = System.Windows.VerticalAlignment.Top;
-            Window_Button_Minimize.Padding = new Thickness(0, 3, 0, 0);
+            Window_Button_Minimize.Padding = new Thickness(0, -CHROME_BUTTON_TOP_MARGIN - 1, 0, 0);
             Window_Button_Minimize.Foreground = Brushes.Black;
             Window_Button_Minimize.BorderThickness = new Thickness(1);
             Window_Button_Minimize.FontWeight = FontWeights.Bold;
             Window_Button_Minimize.Width = 30;
-            Window_Button_Minimize.Margin = new Thickness(0, -3, 81, 0);
+            Window_Button_Minimize.Margin = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 81, 0);
             Window_Button_Minimize.Focusable = false;
             WindowChrome.SetIsHitTestVisibleInChrome(Window_Button_Minimize, true);
 
