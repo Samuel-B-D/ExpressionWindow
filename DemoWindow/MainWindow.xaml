@@ -14,7 +14,7 @@
                 <MenuItem Header="MenuItem 4" />
             </MenuItem>
         </Menu>
-        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="362,358,166,111" />
+        <DatePicker Height="24" Width="150" SelectedDateFormat="Long" Margin="362,358,0,0" HorizontalAlignment="Left" VerticalAlignment="Top" />
         <Button Content="Button" HorizontalAlignment="Left" Margin="12,39,0,0" x:Name="button1" VerticalAlignment="Top" Click="button1_Click" />
         <ListBox Height="100" HorizontalAlignment="Left" Margin="12,68,0,0" x:Name="listBox1" VerticalAlignment="Top" Width="120">
             <ListBoxItem Content="stuff" />
@@ -51,18 +51,18 @@
             </TreeViewItem>
             <TreeViewItem Header="fgjfgjfj" />
         </TreeView>
-        <ScrollViewer Margin="541,56,66,372" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" />
-        <ScrollBar Margin="12,433,332,43" Orientation="Horizontal" RenderTransformOrigin="0.438,2.412" />
-        <ScrollBar Margin="657,56,4,43" />
+        <ScrollViewer Margin="541,56,66,372" HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Visible" HorizontalAlignment="Left" VerticalAlignment="Top" Width="71" Height="64" />
+        <ScrollBar Margin="12,454,0,0" Orientation="Horizontal" RenderTransformOrigin="0.438,2.412" HorizontalAlignment="Left" VerticalAlignment="Top" Width="345" />
+        <ScrollBar Margin="660,56,0,20" HorizontalAlignment="Left" Width="18" VerticalAlignment="Top" Height="416" />
         <Calendar Height="170" HorizontalAlignment="Left" Margin="470,145,0,0" x:Name="calendar1" VerticalAlignment="Top" Width="180" />
         <ProgressBar Height="24" HorizontalAlignment="Left" Margin="172,195,0,0" x:Name="progressBar1" VerticalAlignment="Top" Width="174" Value="50" />
-        <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="55,310,0,0" VerticalAlignment="Top" Width="256"/>
+        <ScrollViewer HorizontalAlignment="Left" Height="98" Margin="10,305,0,0" VerticalAlignment="Top" Width="336"/>
         <Controls:ColorButton Content="Color" BackgroundColor="Green" HorizontalAlignment="Left" Margin="83,39,0,0" VerticalAlignment="Top"/>
-        <Controls:NumericUpDown Height="26" VerticalAlignment="Center" HorizontalAlignment="Right" MinWidth="60" Margin="0,320,159,147" />
-        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="362,390,0,0" VerticalAlignment="Top" Height="82" Width="250"/>
+        <Controls:NumericUpDown Height="26" VerticalAlignment="Top" HorizontalAlignment="Left" MinWidth="60" Margin="362,327,0,0" />
+        <GroupBox Header="GroupBox" HorizontalAlignment="Left" Margin="362,387,0,0" VerticalAlignment="Top" Height="85" Width="250"/>
         <ListView HorizontalAlignment="Left" Height="106" Margin="351,145,0,0" VerticalAlignment="Top" Width="108">
             <ListViewItem Content="test" />
         </ListView>
-        <Controls:MonoPictureButton IsEnabled="True" Margin="590,335,25,108" Width="29" Height="24" Image="pack://application:,,,/ExpressionWindow;component/Icons/Question_White.png" />
+        <Controls:MonoPictureButton IsEnabled="True" Margin="590,335,25,108" Width="29" Height="24" Image="pack://application:,,,/ExpressionWindow;component/Icons/Question_White.png" HorizontalAlignment="Left" VerticalAlignment="Top" />
     </Grid>
 </EW:ExpressionWindow>

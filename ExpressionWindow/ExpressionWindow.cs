@@ -13,6 +13,7 @@ using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 using Microsoft.Windows.Shell;
 using System.Reflection;
+using System.Windows.Media.Effects;
 
 namespace ThemedWindows
 {
@@ -34,7 +35,10 @@ namespace ThemedWindows
         private const int X_BUTTON_MAXIMIZED_WIDTH = 53;
         private Thickness X_BUTTON_NORMAL_MARGIN = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 5, 0);
         private Thickness X_BUTTON_MAXIMIZED_MARGIN = new Thickness(0, CHROME_BUTTON_TOP_MARGIN, 0, 0);
-        private Rect _restoreLocation;
+        private Rect restoreLocation;
+
+        private Version win8version = new Version(6, 2, 9200, 0);
+        private bool IsWin8OrHigher { get { return Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version >= win8version; } }
 
         Brush TitleEnabledBackground;
         Brush TitleDisabledBackground;
@@ -268,14 +272,26 @@ namespace ThemedWindows
 
             if (Window.GetWindow(this).WindowState == System.Windows.WindowState.Maximized)
             {
-                Window_Border.Margin = new Thickness(4,6,4,4);
+                Chrome.ResizeBorderThickness = new Thickness(0);
+                if (IsWin8OrHigher)
+                {
+                    Window_Border.Margin = new Thickness(4);
+                }
+                else
+                {
+                    Window_Border.Margin = new Thickness(4,6,4,4);
+                }
+                    
+                Window_Border.BorderThickness = new Thickness(0);
                 Window_Button_Maximize.Content = 2;
                 Window_Button_Close.Width = X_BUTTON_MAXIMIZED_WIDTH;
                 Window_Button_Close.Margin = X_BUTTON_MAXIMIZED_MARGIN;
             }
             else
             {
+                Chrome.ResizeBorderThickness = new Thickness(RESIZE_HANDLE_SIZE);
                 Window_Border.Margin = new Thickness(0);
+                Window_Border.BorderThickness = new Thickness(1);
                 Window_Button_Maximize.Content = 1;
                 Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
                 Window_Button_Close.Margin = X_BUTTON_NORMAL_MARGIN;
@@ -434,17 +450,10 @@ namespace ThemedWindows
 
         private void Restore()
         {
-            Height = _restoreLocation.Height;
-            Width = _restoreLocation.Width;
-            Left = _restoreLocation.X;
-            Top = _restoreLocation.Y;
-
-            Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
-
-            //Restore border
-            Window_Border.BorderThickness = new Thickness(1);
-            Window_Button_Close.Width = X_BUTTON_NORMAL_WIDTH;
-            Window_Button_Close.Margin = new Thickness(0, -3, 5, 0);
+            Height = restoreLocation.Height;
+            Width = restoreLocation.Width;
+            Left = restoreLocation.X;
+            Top = restoreLocation.Y;
         }
 
         private void Window_MaximizeRestore(object sender, RoutedEventArgs e)
