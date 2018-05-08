@@ -1,6 +1,7 @@
 # ExpressionWindow #
 
 A simple library providing themed windows frame, dialogs and messageboxes based on the ExpressionDark WPF theme (also under the MS-PL Licence and available here : https://www.nuget.org/packages/Wpf.Themes.ExpressionDark/).
+
 Include a color picker and a demo application.
 
 ## Usage ##
@@ -11,7 +12,7 @@ Include a color picker and a demo application.
 	* Inherit `ExpressionWindow` instead of `Window` in the CodeBehind (Or `ThemedWindows.ExpressionWindow` if you didn't add the using clause)
 	
 	### Example XAML ###
-	```
+	```xaml
 	<EW:ExpressionWindow xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow"  
 		x:Class="EXAMPLE.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -23,7 +24,7 @@ Include a color picker and a demo application.
 	```
 	
 	### Example CodeBehind ###
-	```
+	```c#
 	//...
 	using ThemedWindows;
 	
@@ -39,7 +40,7 @@ Include a color picker and a demo application.
 	}
 	```
 3. Enable in-designer preview of the theme by adding the following snipped to your App.xaml :
-	```
+	```xaml
 	<Application.Resources>
         <EW:DesignTimeResourceDictionary 
 			xmlns:EW="clr-namespace:ThemedWindows;assembly=ExpressionWindow" 
