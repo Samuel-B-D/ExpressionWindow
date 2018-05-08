@@ -1,6 +1,6 @@
 # ExpressionWindow #
 
-A simple library providing themed window, dialog and messagebox based on the ExpressionDark theme.
+A simple library providing themed windows frame, dialogs and messageboxes based on the ExpressionDark WPF theme (also under the MS-PL Licence and available here : https://www.nuget.org/packages/Wpf.Themes.ExpressionDark/).
 Include a color picker and a demo application.
 
 ## Usage ##
